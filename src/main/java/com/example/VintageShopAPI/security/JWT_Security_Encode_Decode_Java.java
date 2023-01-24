@@ -1,6 +1,6 @@
 package com.example.VintageShopAPI.security;
 
-import com.etl.kyc.etlkycsimregisterapi.global.GlobalParameter;
+import com.example.VintageShopAPI.global.GlobalParameter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
