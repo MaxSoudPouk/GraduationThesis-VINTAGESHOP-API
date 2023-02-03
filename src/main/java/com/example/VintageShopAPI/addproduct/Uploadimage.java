@@ -16,7 +16,7 @@ public class Uploadimage {
 	
 	 public boolean image_image1(String UPLOAD_DIRECTORY, String fileName, MultipartFile image1) throws IOException, java.io.IOException {
 	        
-		  System.out.println(" UPLOAD_DIRECTORY========: " + UPLOAD_DIRECTORY);
+//		  System.out.println(" UPLOAD_IMAGE1========: " + UPLOAD_DIRECTORY);
 		  
 		 Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
 	         	        if (!Files.exists(uploadPath)) {
@@ -40,6 +40,7 @@ public class Uploadimage {
 	 //================================
 	 public boolean image_image2(String UPLOAD_DIRECTORY, String fileName, MultipartFile image2) throws IOException, java.io.IOException {
 	        Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
+//		 System.out.println(" UPLOAD_IMAGE2========: " + UPLOAD_DIRECTORY);
 	         
 	        if (!Files.exists(uploadPath)) {
 	            Files.createDirectories(uploadPath);
@@ -62,7 +63,8 @@ public class Uploadimage {
 	 //==============================
 	 public boolean image_image3(String UPLOAD_DIRECTORY, String fileName,MultipartFile image3) throws IOException, java.io.IOException {
 	        Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
-	         
+//		 System.out.println(" UPLOAD_IMAGE3========: " + UPLOAD_DIRECTORY);
+
 	        if (!Files.exists(uploadPath)) {
 	            Files.createDirectories(uploadPath);
 	        }
@@ -85,7 +87,7 @@ public class Uploadimage {
 
 	public boolean image_image4(String UPLOAD_DIRECTORY, String fileName,MultipartFile image4) throws IOException, java.io.IOException {
 
-		System.out.println(" UPLOAD_DIRECTORY========: " + UPLOAD_DIRECTORY);
+//		System.out.println(" UPLOAD_IMAGE4========: " + UPLOAD_DIRECTORY);
 
 
 		Path uploadPath = Paths.get(UPLOAD_DIRECTORY);
@@ -111,7 +113,7 @@ public class Uploadimage {
 
 	public boolean image_image5(String UPLOAD_DIRECTORY, String fileName,MultipartFile image5) throws IOException, java.io.IOException {
 
-		System.out.println(" UPLOAD_DIRECTORY========: " + UPLOAD_DIRECTORY);
+//		System.out.println(" UPLOAD_IMAGE5========: " + UPLOAD_DIRECTORY);
 
 
 		Path uploadPath = Paths.get(UPLOAD_DIRECTORY);

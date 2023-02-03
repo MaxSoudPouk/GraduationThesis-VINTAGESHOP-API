@@ -33,7 +33,7 @@ public class AddProductController extends Thread{
     static String current_time = current_year + "" + current_week;
     public static String linux_DIRECTORY = "/home/kyc_Organize/" + current_time + "/";
     // public static String window_DIRECTORY = System.getProperty("C:\\kycimage\\image"+current_week+"\\");
-    public static String window_DIRECTORY = "H:\\Data_VINTAGESHOP\\" + current_time + "\\";
+    public static String window_DIRECTORY = "H:\\Data_VINTAGESHOP\\Product\\" + current_time + "\\";
 
     PreparedStatement pstmt;
     ResultSet rs;
@@ -53,6 +53,7 @@ public class AddProductController extends Thread{
     @PostMapping("/v1/addProduct")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String detail_id,
+            @RequestParam(defaultValue = "") String category_id,
             @RequestParam(defaultValue = "") String product_id,
             @RequestParam(defaultValue = "") String description_id,
             @RequestParam(defaultValue = "") String image_id,
@@ -72,19 +73,14 @@ public class AddProductController extends Thread{
 
         AddProductModel AddProductmodel = new AddProductModel();
 
-
         if (
-              product_id.equals("")
-                      || description.equals("")
-                      || image_id.equals("")
-                      || description_id.equals("")
-                      || detail_id.equals("")
-                      || detailproduct.equals("")
-                      || image1.isEmpty()
-                      || image2.isEmpty()
-                      || image3.isEmpty()
-                      || image4.isEmpty()
-                      || image5.isEmpty()
+                product_id.equals("")
+                        ||category_id.equals("")
+                        || description.equals("")
+                        || image_id.equals("")
+                        || description_id.equals("")
+                        || detail_id.equals("")
+                        || detailproduct.equals("")
         ) {
 
 
@@ -96,13 +92,8 @@ public class AddProductController extends Thread{
 
         }
 
-//       System.out.println("image1 ======================" + image1.getClass().getName());
 
 
-
-
-
-        //                    //=======================End check status================
 
         boolean save_image1 = false;
         boolean save_image2 = false;
@@ -152,11 +143,11 @@ public class AddProductController extends Thread{
             //=====================URL save to db===========================
 
             //String URL_person_window = ServletUriComponentsBuilder.fromCurrentContextPath().path(PATH+"\\"+ img_person_name).build().toUriString();
-            URL_image1 = "/Data_VINTAGESHOP/" + current_time + "/" + img_image1_name;
-            URL_image2 = "/Data_VINTAGESHOP/" + current_time + "/" + img_image2_name;
-            URL_image3 = "/Data_VINTAGESHOP/" + current_time + "/" + img_image3_name;
-            URL_image4 = "/Data_VINTAGESHOP/" + current_time + "/" + img_image4_name;
-            URL_image5 = "/Data_VINTAGESHOP/" + current_time + "/" + img_image5_name;
+            URL_image1 = "/Data_VINTAGESHOP/Product/" + current_time + "/" + img_image1_name;
+            URL_image2 = "/Data_VINTAGESHOP/Product/" + current_time + "/" + img_image2_name;
+            URL_image3 = "/Data_VINTAGESHOP/Product/" + current_time + "/" + img_image3_name;
+            URL_image4 = "/Data_VINTAGESHOP/Product/" + current_time + "/" + img_image4_name;
+            URL_image5 = "/Data_VINTAGESHOP/Product/" + current_time + "/" + img_image5_name;
 
 
 
@@ -170,8 +161,6 @@ public class AddProductController extends Thread{
         }
 
 
-        if (save_image1 && save_image2 && save_image3 && save_image4 && save_image5) {
-
 
             PreparedStatement pstmt;
             ResultSet rs;
@@ -182,11 +171,12 @@ public class AddProductController extends Thread{
             ResultSet resultSettAuth = null;
             Connection conntAuth = null;
 
-            String sql1 = "insert into category_product (product_id) values (?)";
+            String sql1 = "insert into category_product (category_id, product_id) values (?, ?)";
             String sql2 = "insert into pos_image (image_id, image_url_1, image_url_2, image_url_3, image_url_4, image_url_5) values (?, ?, ?, ?, ?, ?)";
             String sql3 = "insert into products_tb (product_id, detail_id, description_id, product_name, image_id) values (?, ?, ?, ?, ?)";
             String sql4 = "insert into descriptions (description_id, description) values (?, ?)";
             String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount) values (?, ?, ?, ?, ?)";
+            String sql6 = "insert into details (detail_id, detail) values (?, ?)";
 
             try {
                 dbConnectionPool = new DatabaseConnectionPool(
@@ -200,7 +190,9 @@ public class AddProductController extends Thread{
                 PreparedStatement statement3 = connection1.prepareStatement(sql3);
                 PreparedStatement statement4 = connection1.prepareStatement(sql4);
                 PreparedStatement statement5 = connection1.prepareStatement(sql5);
-                statement1.setString(1, product_id);
+                PreparedStatement statement6 = connection1.prepareStatement(sql6);
+                statement1.setString(1, category_id);
+                statement1.setString(2, product_id);
                 int rowsUpdated1 = statement1.executeUpdate();
 
                 statement2.setString(1, image_id);
@@ -229,10 +221,13 @@ public class AddProductController extends Thread{
                 statement5.setString(5, amoutProduct);
                 int rowsUpdated5 = statement5.executeUpdate();
 
+                statement6.setString(1, detail_id);
+                statement6.setString(2, detailproduct);
+                int rowsUpdated6 = statement6.executeUpdate();
 
 
                 // System.out.println("sql====="+ sql);
-                if (rowsUpdated1 > 0 && rowsUpdated2 > 0 && rowsUpdated3 > 0 && rowsUpdated4 > 0 && rowsUpdated5 > 0) {
+                if (rowsUpdated1 > 0 && rowsUpdated2 > 0 && rowsUpdated3 > 0 && rowsUpdated4 > 0 && rowsUpdated5 > 0 && rowsUpdated6 > 0) {
                     // System.out.println("An existing user was updated successfully!");
 
                     response.put("resultCode", "200");
@@ -272,26 +267,9 @@ public class AddProductController extends Thread{
                 }
             }
 
-        } else {
-            response.put("resultCode", "200");
-            response.put("product_id",product_id);
-            response.put("productName",productName);
-            response.put("description",description);
-            response.put("detailproduct",detailproduct);
-            response.put("amoutProduct",amoutProduct);
-            response.put("priceProduct",priceProduct);
 
-            return ResponseEntity.ok(response);
-
-        }
-
-        response.put("resultCode", "200");
-        response.put("product_id",product_id);
-        response.put("productName",productName);
-        response.put("description",description);
-        response.put("detailproduct",detailproduct);
-        response.put("amoutProduct",amoutProduct);
-        response.put("priceProduct",priceProduct);
+        response.put("resultCode", "000");
+        response.put("resultMsg", "NULL");
 
         return ResponseEntity.ok(response);
     }

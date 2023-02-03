@@ -1,8 +1,9 @@
-package com.example.VintageShopAPI.addproduct;
+package com.example.VintageShopAPI.showproduct;
 
-public class AddProductModel {
+public class ShowProductModel {
     private String resultCode;
     private String resultMsg;
+
     public String getResultCode() {
         return resultCode;
     }
@@ -15,5 +16,4 @@ public class AddProductModel {
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
     }
-
 }
