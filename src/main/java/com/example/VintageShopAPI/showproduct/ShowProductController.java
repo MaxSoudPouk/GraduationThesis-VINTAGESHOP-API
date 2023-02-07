@@ -21,26 +21,21 @@ public class ShowProductController {
     DatabaseConnectionPool dbConnectionPool;
 
 
-
     private void setRequest(HttpServletRequest request) {
         AddProductController.request = request;
 
     }
 
     @PostMapping("/v1/showProduct")
-    public ResponseEntity<Map<String, Object>> AddProduct(
-            @RequestParam(defaultValue = "") String showProductname
+    public ResponseEntity<Map<String, Object>> AddProduct(@RequestParam(defaultValue = "") String showProductname
 
-    )throws JSONException {
+    ) throws JSONException {
         Map<String, Object> response = new HashMap<>();
 
         List<Map<String, String>> resultMsg = new ArrayList<>();
 
 
-
-        if (
-                showProductname.equals("")
-        ) {
+        if (showProductname.equals("")) {
 
 
             response.put("resultCode", "406");
@@ -59,25 +54,14 @@ public class ShowProductController {
         Statement statementtAuth = null;
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
-        String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " +
-                "FROM category_product  CP " +
-                "JOIN products_tb  P ON CP.product_id = P.product_id " +
-                "JOIN products_attribute PA ON P.product_id = PA.product_id " +
-                "JOIN details D ON P.detail_id = D.detail_id " +
-                "JOIN descriptions DSC ON P.description_id = DSC.description_id " +
-                "JOIN pos_image PI ON P.image_id = PI.image_id " +
-                "WHERE CP.category_id = ?";
+        String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " + "FROM category_product  CP " + "JOIN products_tb  P ON CP.product_id = P.product_id " + "JOIN products_attribute PA ON P.product_id = PA.product_id " + "JOIN details D ON P.detail_id = D.detail_id " + "JOIN descriptions DSC ON P.description_id = DSC.description_id " + "JOIN pos_image PI ON P.image_id = PI.image_id " + "WHERE CP.category_id = ?";
 //=========================== DB ===========================//
 
 //=========================== vintage0001 ===========================//
 
         if (showProductname.equals("vintage0001")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -140,11 +124,7 @@ public class ShowProductController {
 
         else if (showProductname.equals("vintage0002")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -207,11 +187,7 @@ public class ShowProductController {
 
         else if (showProductname.equals("vintage0003")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -274,11 +250,7 @@ public class ShowProductController {
 
         else if (showProductname.equals("vintage0004")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -341,11 +313,7 @@ public class ShowProductController {
 
         else if (showProductname.equals("vintage0005")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -408,11 +376,7 @@ public class ShowProductController {
 
         else if (showProductname.equals("vintage0006")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -475,11 +439,7 @@ public class ShowProductController {
 
         else if (showProductname.equals("vintage0007")) {
             try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 

@@ -10,18 +10,23 @@ public class displaymodel {
     public BufferedImage getImg() {
         return img;
     }
+
     public void setImg(BufferedImage img) {
         this.img = img;
     }
+
     public String getResultCode() {
         return resultCode;
     }
+
     public void setResultCode(String resultCode) {
         this.resultCode = resultCode;
     }
+
     public String getResultMsg() {
         return resultMsg;
     }
+
     public void setResultMsg(String resultMsg) {
         this.resultMsg = resultMsg;
     }

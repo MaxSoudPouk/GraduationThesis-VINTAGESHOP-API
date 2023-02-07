@@ -1,7 +1,6 @@
 package com.example.VintageShopAPI.register;
 
 import com.example.VintageShopAPI.addproduct.AddProductController;
-import com.example.VintageShopAPI.addproduct.Uploadimage;
 import com.example.VintageShopAPI.db.Config;
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
 import org.json.JSONException;
@@ -58,11 +57,9 @@ public class RegisterController {
             @RequestParam(defaultValue = "") String customer_phonenumber,
             @RequestParam(defaultValue = "") String customer_address,
             @RequestParam(defaultValue = "") MultipartFile customer_url_image
-            ) throws JSONException {
+    ) throws JSONException {
 
         Map<String, Object> response = new HashMap<>();
-
-        System.out.println("customer_url_image ===== " + customer_url_image);
 
 
         if (
@@ -86,7 +83,7 @@ public class RegisterController {
 
         if (customer_url_image.isEmpty()) {
 
-            String URL_image1 = "";
+            String URL_image1 = "/Data_VINTAGESHOP/Profile/DemoProfile/user.png";
 
             PreparedStatement pstmt;
             ResultSet rs;
@@ -99,38 +96,57 @@ public class RegisterController {
 
             String sql1 = "insert into customer_tb (customer_id, customer_first_name, customer_last_name, customer_password, customer_email, customer_phonenumber, customer_address, customer_url_image) " +
                     "values (?, ?, ?, ?, ?, ?, ?, ?); ";
-
+            String sqlqr = "SELECT * FROM customer_tb WHERE customer_email = ? ;";
 
             try {
                 dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
+                        Config.driverServr, Config.dburlServr,
                         Config.dbUserNameServr,
                         Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
-                PreparedStatement statement = connection1.prepareStatement(sql1);
-
-                statement.setString(1, customer_id);
-                statement.setString(2, customer_first_name);
-                statement.setString(3, customer_last_name);
-                statement.setString(4, customer_password);
-                statement.setString(5, customer_email);
-                statement.setString(6, customer_phonenumber);
-                statement.setString(7, customer_address);
-                statement.setString(8, URL_image1);
-                int rowsUpdated = statement.executeUpdate();
+                PreparedStatement statement = connection1.prepareStatement(sqlqr);
 
 
+                statement.setString(1, customer_email);
+                ResultSet resultSet = statement.executeQuery();
 
-                // System.out.println("sql====="+ sql);
-                if (rowsUpdated > 0) {
-                    // System.out.println("An existing user was updated successfully!");
+                if (resultSet.next()) {
+                    String customer_email_qr = resultSet.getString("customer_email");
 
-                    response.put("resultCode", "200");
-                    response.put("resultMsg", "OK, success");
+                    response.put("resultCode", "209");
+                    response.put("resultMsg", "Duplicate, Email");
 
                     return ResponseEntity.ok(response);
+
+                } else {
+
+                    PreparedStatement statement1 = connection1.prepareStatement(sql1);
+
+                    statement1.setString(1, customer_id);
+                    statement1.setString(2, customer_first_name);
+                    statement1.setString(3, customer_last_name);
+                    statement1.setString(4, customer_password);
+                    statement1.setString(5, customer_email);
+                    statement1.setString(6, customer_phonenumber);
+                    statement1.setString(7, customer_address);
+                    statement1.setString(8, URL_image1);
+                    int rowsUpdated = statement1.executeUpdate();
+
+
+                    // System.out.println("sql====="+ sql);
+                    if (rowsUpdated > 0) {
+
+
+                        response.put("resultCode", "200");
+                        response.put("resultMsg", "OK, success");
+                        response.put("customer_url_image", URL_image1);
+                        response.put("customer_first_name", customer_first_name);
+
+                        return ResponseEntity.ok(response);
+                    }
+                    // System.out.println("An existing user was updated successfully!");
                 }
+
 
             } catch (SQLException ex) {
 
@@ -164,8 +180,7 @@ public class RegisterController {
             }
 
 
-
-    }else {
+        } else {
 
 
             boolean save_image1 = false;
@@ -215,88 +230,100 @@ public class RegisterController {
             }
 
 
+            PreparedStatement pstmt;
+            ResultSet rs;
+            DatabaseConnectionPool dbConnectionPool = null;
+            Connection connection1 = null;
+            String strRetunr = null;
+            Statement statementtAuth = null;
+            ResultSet resultSettAuth = null;
+            Connection conntAuth = null;
 
-
-        PreparedStatement pstmt;
-        ResultSet rs;
-        DatabaseConnectionPool dbConnectionPool = null;
-        Connection connection1 = null;
-        String strRetunr = null;
-        Statement statementtAuth = null;
-        ResultSet resultSettAuth = null;
-        Connection conntAuth = null;
-
-        String sql = "INSERT INTO customer_tb (customer_id, customer_first_name, customer_last_name, customer_password, customer_email," +
+            String sql = "INSERT INTO customer_tb (customer_id, customer_first_name, customer_last_name, customer_password, customer_email," +
                     " customer_phonenumber, customer_address, customer_url_image) values (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlqr = "SELECT * FROM customer_tb WHERE customer_email = ? ;";
 
 
-        try {
-            dbConnectionPool = new DatabaseConnectionPool(
-                    Config.driverServr,
-                    Config.dburlServr,
-                    Config.dbUserNameServr,
-                    Config.dbPasswordServr);
-            connection1 = dbConnectionPool.getConnection();
-            PreparedStatement statement = connection1.prepareStatement(sql);
-
-
-
-            statement.setString(1, customer_id);
-            statement.setString(2, customer_first_name);
-            statement.setString(3, customer_last_name);
-            statement.setString(4, customer_password);
-            statement.setString(5, customer_email);
-            statement.setString(6, customer_phonenumber);
-            statement.setString(7, customer_address);
-            statement.setString(8, URL_image1);
-            int rowsUpdated = statement.executeUpdate();
-
-
-
-
-
-            // System.out.println("sql====="+ sql);
-            if (rowsUpdated > 0) {
-                // System.out.println("An existing user was updated successfully!");
-
-                response.put("resultCode", "200");
-                response.put("resultMsg", "OK, success");
-                response.put("customer_first_name", customer_first_name);
-                response.put("customer_last_name", customer_last_name);
-
-                return ResponseEntity.ok(response);
-            }
-
-        } catch (SQLException ex) {
-
-            response.put("resultCode", "216");
-            response.put("resultMsg", "Error query Data Product");
-            response.put("extraPara", "");
-
-            return ResponseEntity.ok(response);
-        } finally {
 
             try {
+                dbConnectionPool = new DatabaseConnectionPool(
+                        Config.driverServr, Config.dburlServr,
+                        Config.dbUserNameServr,
+                        Config.dbPasswordServr);
+                connection1 = dbConnectionPool.getConnection();
+                PreparedStatement statement = connection1.prepareStatement(sqlqr);
 
-                dbConnectionPool.freeConnection(connection1);
-                // release resources
-                // dbConnectionPool.destroy();
 
-                if (conntAuth != null) {
-                    conntAuth.close();
+                statement.setString(1, customer_email);
+                ResultSet resultSet = statement.executeQuery();
+
+                if (resultSet.next()) {
+                    String customer_email_qr = resultSet.getString("customer_email");
+
+                    response.put("resultCode", "209");
+                    response.put("resultMsg", "Duplicate, Email");
+
+                    return ResponseEntity.ok(response);
+
+                } else {
+
+                    PreparedStatement statement1 = connection1.prepareStatement(sql);
+
+                    statement1.setString(1, customer_id);
+                    statement1.setString(2, customer_first_name);
+                    statement1.setString(3, customer_last_name);
+                    statement1.setString(4, customer_password);
+                    statement1.setString(5, customer_email);
+                    statement1.setString(6, customer_phonenumber);
+                    statement1.setString(7, customer_address);
+                    statement1.setString(8, URL_image1);
+                    int rowsUpdated = statement1.executeUpdate();
+
+
+                    // System.out.println("sql====="+ sql);
+                    if (rowsUpdated > 0) {
+
+
+                        response.put("resultCode", "200");
+                        response.put("resultMsg", "OK, success");
+                        response.put("customer_url_image", URL_image1);
+                        response.put("customer_first_name", customer_first_name);
+
+                        return ResponseEntity.ok(response);
+                    }
+                    // System.out.println("An existing user was updated successfully!");
                 }
 
-                if (statementtAuth != null) {
-                    statementtAuth.close();
-                }
+            } catch (SQLException ex) {
 
-                if (resultSettAuth != null) {
-                    resultSettAuth.close();
-                }
-            } catch (Exception e3) {
+                response.put("resultCode", "216");
+                response.put("resultMsg", "Error query Data Product");
+                response.put("extraPara", "");
 
+                return ResponseEntity.ok(response);
+            } finally {
+
+                try {
+
+                    dbConnectionPool.freeConnection(connection1);
+                    // release resources
+                    // dbConnectionPool.destroy();
+
+                    if (conntAuth != null) {
+                        conntAuth.close();
+                    }
+
+                    if (statementtAuth != null) {
+                        statementtAuth.close();
+                    }
+
+                    if (resultSettAuth != null) {
+                        resultSettAuth.close();
+                    }
+                } catch (Exception e3) {
+
+                }
             }
-        }
         }
 
 

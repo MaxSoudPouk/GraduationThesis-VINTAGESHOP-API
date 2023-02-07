@@ -23,7 +23,7 @@ import java.util.*;
 
 @RestController
 @CrossOrigin
-public class AddProductController extends Thread{
+public class AddProductController extends Thread {
 
     //private static final String PATTERN_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String PATTERN_FORMAT = "HHmmss";
@@ -49,7 +49,6 @@ public class AddProductController extends Thread{
     }
 
 
-
     @PostMapping("/v1/addProduct")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String detail_id,
@@ -67,7 +66,7 @@ public class AddProductController extends Thread{
             @RequestParam(defaultValue = "") MultipartFile image3,
             @RequestParam(defaultValue = "") MultipartFile image4,
             @RequestParam(defaultValue = "") MultipartFile image5
-    )throws JSONException{
+    ) throws JSONException {
 
         Map<String, Object> response = new HashMap<>();
 
@@ -75,7 +74,7 @@ public class AddProductController extends Thread{
 
         if (
                 product_id.equals("")
-                        ||category_id.equals("")
+                        || category_id.equals("")
                         || description.equals("")
                         || image_id.equals("")
                         || description_id.equals("")
@@ -91,8 +90,6 @@ public class AddProductController extends Thread{
             return ResponseEntity.ok(response);
 
         }
-
-
 
 
         boolean save_image1 = false;
@@ -150,8 +147,6 @@ public class AddProductController extends Thread{
             URL_image5 = "/Data_VINTAGESHOP/Product/" + current_time + "/" + img_image5_name;
 
 
-
-
         } catch (Exception ex) {
             response.put("resultCode", "210");
             response.put("resultMsg", "Can not Upload image");
@@ -161,111 +156,110 @@ public class AddProductController extends Thread{
         }
 
 
+        PreparedStatement pstmt;
+                    ResultSet rs;
+        DatabaseConnectionPool dbConnectionPool = null;
+        Connection connection1 = null;
+        String strRetunr = null;
+        Statement statementtAuth = null;
+        ResultSet resultSettAuth = null;
+        Connection conntAuth = null;
 
-            PreparedStatement pstmt;
-            ResultSet rs;
-            DatabaseConnectionPool dbConnectionPool = null;
-            Connection connection1 = null;
-            String strRetunr = null;
-            Statement statementtAuth = null;
-            ResultSet resultSettAuth = null;
-            Connection conntAuth = null;
+        String sql1 = "insert into category_product (category_id, product_id) values (?, ?)";
+        String sql2 = "insert into pos_image (image_id, image_url_1, image_url_2, image_url_3, image_url_4, image_url_5) values (?, ?, ?, ?, ?, ?)";
+        String sql3 = "insert into products_tb (product_id, detail_id, description_id, product_name, image_id) values (?, ?, ?, ?, ?)";
+        String sql4 = "insert into descriptions (description_id, description) values (?, ?)";
+        String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount) values (?, ?, ?, ?, ?)";
+        String sql6 = "insert into details (detail_id, detail) values (?, ?)";
 
-            String sql1 = "insert into category_product (category_id, product_id) values (?, ?)";
-            String sql2 = "insert into pos_image (image_id, image_url_1, image_url_2, image_url_3, image_url_4, image_url_5) values (?, ?, ?, ?, ?, ?)";
-            String sql3 = "insert into products_tb (product_id, detail_id, description_id, product_name, image_id) values (?, ?, ?, ?, ?)";
-            String sql4 = "insert into descriptions (description_id, description) values (?, ?)";
-            String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount) values (?, ?, ?, ?, ?)";
-            String sql6 = "insert into details (detail_id, detail) values (?, ?)";
+        try {
+            dbConnectionPool = new DatabaseConnectionPool(
+                    Config.driverServr,
+                    Config.dburlServr,
+                    Config.dbUserNameServr,
+                    Config.dbPasswordServr);
+            connection1 = dbConnectionPool.getConnection();
+            PreparedStatement statement1 = connection1.prepareStatement(sql1);
+            PreparedStatement statement2 = connection1.prepareStatement(sql2);
+            PreparedStatement statement3 = connection1.prepareStatement(sql3);
+            PreparedStatement statement4 = connection1.prepareStatement(sql4);
+            PreparedStatement statement5 = connection1.prepareStatement(sql5);
+            PreparedStatement statement6 = connection1.prepareStatement(sql6);
+            statement1.setString(1, category_id);
+            statement1.setString(2, product_id);
+            int rowsUpdated1 = statement1.executeUpdate();
 
-            try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
-                connection1 = dbConnectionPool.getConnection();
-                PreparedStatement statement1 = connection1.prepareStatement(sql1);
-                PreparedStatement statement2 = connection1.prepareStatement(sql2);
-                PreparedStatement statement3 = connection1.prepareStatement(sql3);
-                PreparedStatement statement4 = connection1.prepareStatement(sql4);
-                PreparedStatement statement5 = connection1.prepareStatement(sql5);
-                PreparedStatement statement6 = connection1.prepareStatement(sql6);
-                statement1.setString(1, category_id);
-                statement1.setString(2, product_id);
-                int rowsUpdated1 = statement1.executeUpdate();
+            statement2.setString(1, image_id);
+            statement2.setString(2, URL_image1);
+            statement2.setString(3, URL_image2);
+            statement2.setString(4, URL_image3);
+            statement2.setString(5, URL_image4);
+            statement2.setString(6, URL_image5);
+            int rowsUpdated2 = statement2.executeUpdate();
 
-                statement2.setString(1, image_id);
-                statement2.setString(2, URL_image1);
-                statement2.setString(3, URL_image2);
-                statement2.setString(4, URL_image3);
-                statement2.setString(5, URL_image4);
-                statement2.setString(6, URL_image5);
-                int rowsUpdated2 = statement2.executeUpdate();
+            statement3.setString(1, product_id);
+            statement3.setString(2, detail_id);
+            statement3.setString(3, description_id);
+            statement3.setString(4, productName);
+            statement3.setString(5, image_id);
+            int rowsUpdated3 = statement3.executeUpdate();
 
-                statement3.setString(1, product_id);
-                statement3.setString(2, detail_id);
-                statement3.setString(3, description_id);
-                statement3.setString(4, productName);
-                statement3.setString(5, image_id);
-                int rowsUpdated3 = statement3.executeUpdate();
+            statement4.setString(1, description_id);
+            statement4.setString(2, description);
+            int rowsUpdated4 = statement4.executeUpdate();
 
-                statement4.setString(1, description_id);
-                statement4.setString(2, description);
-                int rowsUpdated4 = statement4.executeUpdate();
+            statement5.setString(1, product_id);
+            statement5.setString(2, image_id);
+            statement5.setDouble(3, priceProduct);
+            statement5.setString(4, detail_id);
+            statement5.setString(5, amoutProduct);
+            int rowsUpdated5 = statement5.executeUpdate();
 
-                statement5.setString(1, product_id);
-                statement5.setString(2, image_id);
-                statement5.setDouble(3, priceProduct);
-                statement5.setString(4, detail_id);
-                statement5.setString(5, amoutProduct);
-                int rowsUpdated5 = statement5.executeUpdate();
-
-                statement6.setString(1, detail_id);
-                statement6.setString(2, detailproduct);
-                int rowsUpdated6 = statement6.executeUpdate();
+            statement6.setString(1, detail_id);
+            statement6.setString(2, detailproduct);
+            int rowsUpdated6 = statement6.executeUpdate();
 
 
-                // System.out.println("sql====="+ sql);
-                if (rowsUpdated1 > 0 && rowsUpdated2 > 0 && rowsUpdated3 > 0 && rowsUpdated4 > 0 && rowsUpdated5 > 0 && rowsUpdated6 > 0) {
-                    // System.out.println("An existing user was updated successfully!");
+            // System.out.println("sql====="+ sql);
+            if (rowsUpdated1 > 0 && rowsUpdated2 > 0 && rowsUpdated3 > 0 && rowsUpdated4 > 0 && rowsUpdated5 > 0 && rowsUpdated6 > 0) {
+                // System.out.println("An existing user was updated successfully!");
 
-                    response.put("resultCode", "200");
-                    response.put("resultMsg", "OK, success");
-
-                    return ResponseEntity.ok(response);
-                }
-
-            } catch (SQLException ex) {
-
-                response.put("resultCode", "216");
-                response.put("resultMsg", "Error query Data Product");
-                response.put("extraPara", "");
+                response.put("resultCode", "200");
+                response.put("resultMsg", "OK, success");
 
                 return ResponseEntity.ok(response);
-            } finally {
-
-                try {
-
-                    dbConnectionPool.freeConnection(connection1);
-                    // release resources
-                    // dbConnectionPool.destroy();
-
-                    if (conntAuth != null) {
-                        conntAuth.close();
-                    }
-
-                    if (statementtAuth != null) {
-                        statementtAuth.close();
-                    }
-
-                    if (resultSettAuth != null) {
-                        resultSettAuth.close();
-                    }
-                } catch (Exception e3) {
-
-                }
             }
+
+        } catch (SQLException ex) {
+
+            response.put("resultCode", "216");
+            response.put("resultMsg", "Error query Data Product");
+            response.put("extraPara", "");
+
+            return ResponseEntity.ok(response);
+        } finally {
+
+            try {
+
+                dbConnectionPool.freeConnection(connection1);
+                // release resources
+                // dbConnectionPool.destroy();
+
+                if (conntAuth != null) {
+                    conntAuth.close();
+                }
+
+                if (statementtAuth != null) {
+                    statementtAuth.close();
+                }
+
+                if (resultSettAuth != null) {
+                    resultSettAuth.close();
+                }
+            } catch (Exception e3) {
+
+            }
+        }
 
 
         response.put("resultCode", "000");

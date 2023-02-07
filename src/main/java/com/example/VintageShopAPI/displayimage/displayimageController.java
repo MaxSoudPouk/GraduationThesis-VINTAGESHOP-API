@@ -20,9 +20,9 @@ public class displayimageController {
 
     @RequestMapping
             (value = "/v1/displayimage", method = {
-            RequestMethod.GET,
-            RequestMethod.POST},
-            produces = MediaType.IMAGE_PNG_VALUE)
+                    RequestMethod.GET,
+                    RequestMethod.POST},
+                    produces = MediaType.IMAGE_PNG_VALUE)
     public BufferedImage getImage(
             @RequestParam(defaultValue = "") String filename
     ) throws java.io.IOException {
@@ -31,9 +31,9 @@ public class displayimageController {
             return null;
         }
 
-            String FILE_PATH_ROOT = "H:/";
-            bufferedImage = ImageIO.read(new File(FILE_PATH_ROOT + filename).getAbsoluteFile());
-            return bufferedImage;
+        String FILE_PATH_ROOT = "H:/";
+        bufferedImage = ImageIO.read(new File(FILE_PATH_ROOT + filename).getAbsoluteFile());
+        return bufferedImage;
 
 
     }
