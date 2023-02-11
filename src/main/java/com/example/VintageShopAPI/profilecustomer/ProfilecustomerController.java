@@ -58,7 +58,7 @@ public class ProfilecustomerController {
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
 
-        String query = "SELECT customer_first_name, customer_last_name, customer_phonenumber, customer_address " +
+        String query = "SELECT customer_first_name, customer_last_name, customer_phonenumber, customer_address, customer_url_image, customer_email " +
                 "FROM customer_tb " +
                 "WHERE customer_id = '"+customerLoginID+"' OR customer_email = '"+customerLoginEmail+"';";
 
@@ -78,6 +78,8 @@ public class ProfilecustomerController {
                 String lastName = resultSet.getString("customer_last_name");
                 String phoneNumber = resultSet.getString("customer_phonenumber");
                 String address = resultSet.getString("customer_address");
+                String customeremail = resultSet.getString("customer_email");
+                String customerurlimage = resultSet.getString("customer_url_image");
                 // Do something with the result set
 
 
@@ -87,6 +89,9 @@ public class ProfilecustomerController {
                 response.put("LastName", lastName);
                 response.put("PhoneNumber", phoneNumber);
                 response.put("Address", address);
+                response.put("Email", customeremail);
+                response.put("URL_image", customerurlimage);
+
 
                 return ResponseEntity.ok(response);
 
