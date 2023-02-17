@@ -1,4 +1,4 @@
-package com.example.VintageShopAPI.showproduct;
+package com.example.VintageShopAPI.showproductadmin;
 
 import com.example.VintageShopAPI.addproduct.AddProductController;
 import com.example.VintageShopAPI.db.Config;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-public class ShowProductController {
+public class ShowProductAdminController {
     public static HttpServletRequest request;
     DatabaseConnectionPool dbConnectionPool;
 

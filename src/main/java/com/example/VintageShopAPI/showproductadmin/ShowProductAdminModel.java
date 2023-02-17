@@ -1,6 +1,6 @@
-package com.example.VintageShopAPI.showproduct;
+package com.example.VintageShopAPI.showproductadmin;
 
-public class ShowProductModel {
+public class ShowProductAdminModel {
     private String resultCode;
     private String resultMsg;
 

@@ -56,9 +56,6 @@ public class ShowUserCustomerController {
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
         String sql = "SELECT customer_id, customer_first_name, customer_url_image, customer_phonenumber, customer_address FROM customer_tb;";
-
-
-        
 //=========================== DB ===========================//
 
         try {
