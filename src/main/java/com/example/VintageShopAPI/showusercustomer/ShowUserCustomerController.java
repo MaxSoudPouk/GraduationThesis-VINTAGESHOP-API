@@ -22,7 +22,7 @@ public class ShowUserCustomerController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        ShowUserCustomerController.request = request;
 
     }
     @GetMapping("/v1/ShowUserCustomer")

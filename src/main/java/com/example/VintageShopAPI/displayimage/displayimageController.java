@@ -1,6 +1,7 @@
 package com.example.VintageShopAPI.displayimage;
 
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
+import com.example.VintageShopAPI.login.LoginController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,10 @@ public class displayimageController {
     DatabaseConnectionPool dbConnectionPool;
 
     BufferedImage bufferedImage;
+    private void setRequest(HttpServletRequest request) {
+        displayimageController.request = request;
+
+    }
 
     @RequestMapping
             (value = "/v1/displayimage", method = {

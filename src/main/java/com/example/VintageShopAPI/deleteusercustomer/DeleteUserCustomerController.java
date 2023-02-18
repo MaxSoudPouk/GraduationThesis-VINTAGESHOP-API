@@ -20,7 +20,7 @@ public class DeleteUserCustomerController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        DeleteUserCustomerController.request = request;
 
     }
 

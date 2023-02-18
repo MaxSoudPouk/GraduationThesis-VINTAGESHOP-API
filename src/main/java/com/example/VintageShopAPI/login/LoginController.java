@@ -25,7 +25,7 @@ public class LoginController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        LoginController.request = request;
 
     }
     @PostMapping("/v1/login")

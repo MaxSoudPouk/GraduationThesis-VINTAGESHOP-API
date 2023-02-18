@@ -14,10 +14,10 @@ import java.util.*;
 @RestController
 @CrossOrigin
 public class ProfilecustomerController {
-
+    public static HttpServletRequest request;
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        ProfilecustomerController.request = request;
 
     }
 

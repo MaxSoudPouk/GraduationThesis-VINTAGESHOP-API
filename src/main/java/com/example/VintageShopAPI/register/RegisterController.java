@@ -43,7 +43,7 @@ public class RegisterController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        RegisterController.request = request;
 
     }
 

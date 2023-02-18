@@ -22,7 +22,7 @@ public class ShowProductAdminController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        ShowProductAdminController.request = request;
 
     }
 

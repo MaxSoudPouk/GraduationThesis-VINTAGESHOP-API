@@ -25,7 +25,7 @@ public class ShowAllProductCustomerController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        ShowAllProductCustomerController.request = request;
 
     }
     @GetMapping("/v1/ShowAllProductCustomer")

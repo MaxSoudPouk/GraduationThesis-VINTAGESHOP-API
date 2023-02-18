@@ -44,7 +44,7 @@ public class UpdateUserCustomerController {
 
 
     private void setRequest(HttpServletRequest request) {
-        AddProductController.request = request;
+        UpdateUserCustomerController.request = request;
 
     }
 
