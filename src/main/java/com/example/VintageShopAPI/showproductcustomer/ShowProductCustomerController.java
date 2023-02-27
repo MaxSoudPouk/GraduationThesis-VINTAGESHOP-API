@@ -1,12 +1,14 @@
-package com.example.VintageShopAPI.showproductadmin;
+package com.example.VintageShopAPI.showproductcustomer;
 
-import com.example.VintageShopAPI.addproduct.AddProductController;
 import com.example.VintageShopAPI.db.Config;
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
 import com.example.VintageShopAPI.security.JWT_Security_Encode_Decode_Java;
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.*;
@@ -17,29 +19,26 @@ import java.util.Map;
 
 @RestController
 @CrossOrigin
-public class ShowProductAdminController {
+public class ShowProductCustomerController {
     public static HttpServletRequest request;
     DatabaseConnectionPool dbConnectionPool;
 
 
     private void setRequest(HttpServletRequest request) {
-        ShowProductAdminController.request = request;
+        ShowProductCustomerController.request = request;
 
     }
 
-    @PostMapping("/v1/showProduct")
+    @PostMapping("/v1/showProductCustomer")
     public ResponseEntity<Map<String, Object>> AddProduct(
-            @RequestParam(defaultValue = "") String showProductname,
-            @RequestParam(defaultValue = "") String token,
-            @RequestParam(defaultValue = "") String customer_ID,
-            @RequestParam(defaultValue = "") String customer_email
+            @RequestParam(defaultValue = "") String showProductname
 
     ) throws JSONException {
         Map<String, Object> response = new HashMap<>();
 
         List<Map<String, String>> resultMsg = new ArrayList<>();
 
-        if (showProductname.equals("")||token.equals("")||customer_ID.equals("")||customer_email.equals("")) {
+        if (showProductname.equals("")) {
 
 
             response.put("resultCode", "406");
@@ -62,13 +61,13 @@ public class ShowProductAdminController {
         String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " + "FROM category_product  CP " + "JOIN products_tb  P ON CP.product_id = P.product_id " + "JOIN products_attribute PA ON P.product_id = PA.product_id " + "JOIN details D ON P.detail_id = D.detail_id " + "JOIN descriptions DSC ON P.description_id = DSC.description_id " + "JOIN pos_image PI ON P.image_id = PI.image_id " + "WHERE CP.category_id = ?";
 //=========================== DB ===========================//
 
-        //validate JWT
-        boolean jwtencoderesult = false;
-
-        JWT_Security_Encode_Decode_Java encode_Decode_Java = new JWT_Security_Encode_Decode_Java();
-        jwtencoderesult = encode_Decode_Java.deCodeJWT_validate(token, customer_email, customer_ID);
-
-        if (jwtencoderesult) {
+//        //validate JWT
+//        boolean jwtencoderesult = false;
+//
+//        JWT_Security_Encode_Decode_Java encode_Decode_Java = new JWT_Security_Encode_Decode_Java();
+//        jwtencoderesult = encode_Decode_Java.deCodeJWT_validate(token, customer_email, customer_ID);
+//
+//        if (jwtencoderesult) {
 
 //=========================== vintage0001 ===========================//
 
@@ -511,14 +510,14 @@ public class ShowProductAdminController {
             return ResponseEntity.ok(response);
         }
 //=========================== vintage0007 END ===========================//
-        }
-                else {
-
-            response.put("resultCode", "498");
-            response.put("ResultMsg", "Invalid_Token");
-            return ResponseEntity.ok(response);
-
-        }
+//        }
+//                else {
+//
+//            response.put("resultCode", "498");
+//            response.put("ResultMsg", "Invalid_Token");
+//            return ResponseEntity.ok(response);
+//
+//        }
 
 
         response.put("resultCode", "201");

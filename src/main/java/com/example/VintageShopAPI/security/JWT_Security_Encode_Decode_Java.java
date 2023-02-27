@@ -52,7 +52,7 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 		JwtBuilder   builder = Jwts.builder().setId(customer_email)
 				.setIssuedAt(now)
 				.setSubject(customer_email) // User Namw
-				.setSubject(Customer_ID) // User Namw
+				.setIssuer(Customer_ID) // User Namw
 				.signWith(signingKey, signatureAlgorithm);
 
 		// if it has been specified, let's add the expiration
@@ -66,9 +66,9 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 		return builder.compact();
 	}
 
-	public boolean deCodeJWT_validate1(String jwt, String customer_email) {
+	public boolean deCodeJWT_validate(String jwt, String customer_email,String customer_ID) {
 		try {
-//			 System.out.println(" jwtgetuserName  ========:: " + userName);
+//			 System.out.println(" jwt  ========:: " + jwt);
 //			 System.out.println(" jwtgetmsisdn    ========:: " + msisdn);
 
 
@@ -89,10 +89,10 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 
 
 			String getCustomer_email = claims.getSubject();
-			String getuserName = claims.getIssuer();
+			String getCustomerID = claims.getIssuer();
 
-//			System.out.println("getPhoneNumber  ========:: " + getPhoneNumber);
-//			System.out.println("getuserName  ========:: " + getuserName);
+//			System.out.println("getCustomer_email  ========:: " + getCustomer_email);
+//			System.out.println("getuserName  ========:: " + getCustomerID);
 
 			// System.out.println(" jwtgetUserName11111========:: " + getuserName);
 			// System.out.println(" jwtgetUserID1111111========:: " + getPhoneNumber);
@@ -121,7 +121,7 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 			// System.out.println("getMsisdn: " + claims.getSubject());
 			// System.out.println("msisdn: " + msisdn);
 
-			if (getCustomer_email.equals(customer_email) && getuserName.equals(getuserName)) {
+			if (getCustomer_email.equals(customer_email) && getCustomerID.equals(customer_ID)) {
 				// if(getMsisdn.equals(msisdn) && localSessionID.equals(isSessionIDJWT) ) {
 				return true;
 			} else {

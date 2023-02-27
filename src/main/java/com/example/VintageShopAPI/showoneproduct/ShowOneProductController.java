@@ -3,6 +3,7 @@ package com.example.VintageShopAPI.showoneproduct;
 import com.example.VintageShopAPI.addproduct.AddProductController;
 import com.example.VintageShopAPI.db.Config;
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
+import com.example.VintageShopAPI.security.JWT_Security_Encode_Decode_Java;
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,15 +32,14 @@ public class ShowOneProductController {
     }
     @GetMapping("/v1/ShowOneProductCustomer")
     public ResponseEntity<Map<String, Object>> AddProduct(
-            @RequestParam(defaultValue = "") String productIDShow,
-            @RequestParam(defaultValue = "") String token
+            @RequestParam(defaultValue = "") String productIDShow
 
     ) throws JSONException {
         Map<String, Object> response = new HashMap<>();
 
         List<Map<String, String>> resultMsg = new ArrayList<>();
 
-        if (token.equals("") || productIDShow.equals("")) {
+        if (productIDShow.equals("") ) {
 
 
             response.put("resultCode", "406");
@@ -50,16 +50,7 @@ public class ShowOneProductController {
 
         }
 
-        if (productIDShow.equals("")) {
 
-
-            response.put("resultCode", "406");
-            response.put("resultMsg", "parameter not acceptable");
-            response.put("extraPara", "");
-
-            return ResponseEntity.ok(response);
-
-        }
 //=========================== DB ===========================//
         PreparedStatement pstmt;
         ResultSet rs;
@@ -80,11 +71,22 @@ public class ShowOneProductController {
                 "WHERE CP.product_id = ? ";
 //=========================== DB ===========================//
 
-//=========================== vintage0001 ===========================//
+
+//validate JWT
+//        boolean jwtencoderesult = false;
+
+//        JWT_Security_Encode_Decode_Java encode_Decode_Java = new JWT_Security_Encode_Decode_Java();
+//        jwtencoderesult = encode_Decode_Java.deCodeJWT_validate(token, customer_email, customer_ID);
+//
+//        if (jwtencoderesult) {
 
 
             try {
-                dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
+                dbConnectionPool = new DatabaseConnectionPool(
+                        Config.driverServr,
+                        Config.dburlServr,
+                        Config.dbUserNameServr,
+                        Config.dbPasswordServr);
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
@@ -144,4 +146,13 @@ public class ShowOneProductController {
             response.put("ProductDetail", resultMsg);
             return ResponseEntity.ok(response);
         }
+//        else {
+//
+//            response.put("resultCode", "498");
+//            response.put("ResultMsg", "Invalid_Token");
+//            return ResponseEntity.ok(response);
+//
+//        }
+//    }
+
 }
