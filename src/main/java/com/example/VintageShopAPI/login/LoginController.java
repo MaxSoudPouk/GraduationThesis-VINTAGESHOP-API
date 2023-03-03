@@ -102,7 +102,7 @@ public class LoginController {
                     response.put("Customer_ID", Customer_ID);
                     response.put("Customer_Email", customer_email);
                     response.put("customer_url_image", customerurlimage);
-                    response.put("user_detail", user_detail);
+                    response.put("user_detail", "Customer User");
 
 
                     return ResponseEntity.ok(response);

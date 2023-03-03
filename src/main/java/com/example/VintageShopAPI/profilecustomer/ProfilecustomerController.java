@@ -3,6 +3,7 @@ package com.example.VintageShopAPI.profilecustomer;
 import com.example.VintageShopAPI.addproduct.AddProductController;
 import com.example.VintageShopAPI.db.Config;
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
+import com.example.VintageShopAPI.security.JWT_Security_Encode_Decode_Java;
 import org.json.JSONException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +26,8 @@ public class ProfilecustomerController {
     @GetMapping("/v1/profilecustomer")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String customerLoginID,
-            @RequestParam(defaultValue = "") String customerLoginEmail
+            @RequestParam(defaultValue = "") String customerLoginEmail,
+            @RequestParam(defaultValue = "") String token
 
     ) throws JSONException {
 
@@ -62,6 +64,13 @@ public class ProfilecustomerController {
                 "FROM customer_tb " +
                 "WHERE customer_id = '"+customerLoginID+"' OR customer_email = '"+customerLoginEmail+"';";
 
+        //validate JWT
+        boolean jwtencoderesult = false;
+
+        JWT_Security_Encode_Decode_Java encode_Decode_Java = new JWT_Security_Encode_Decode_Java();
+        jwtencoderesult = encode_Decode_Java.deCodeJWT_validate(token, customerLoginEmail, customerLoginID);
+
+        if (jwtencoderesult) {
 
         try {
             dbConnectionPool = new DatabaseConnectionPool(
@@ -127,6 +136,15 @@ public class ProfilecustomerController {
             } catch (Exception e3) {
 
             }
+        }
+    }
+
+                else {
+
+            response.put("resultCode", "498");
+            response.put("ResultMsg", "Invalid_Token");
+            return ResponseEntity.ok(response);
+
         }
         response.put("resultCode", "000");
         response.put("resultMsg", "NULL");

@@ -297,6 +297,15 @@ public class UpdateUserCustomerController {
             }
         }
 
+        //    }
+        //        else {
+//
+//            response.put("resultCode", "498");
+//            response.put("ResultMsg", "Invalid_Token");
+//            return ResponseEntity.ok(response);
+//
+//        }
+
 
         response.put("resultCode", "000");
         response.put("resultMsg", "NULL");

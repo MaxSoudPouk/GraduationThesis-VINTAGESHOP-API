@@ -29,20 +29,19 @@ public class CustomerMessageController {
     }
     @PostMapping("/v1/CustomerMessage")
     public ResponseEntity<Map<String, Object>> AddProduct(
-            @RequestParam(defaultValue = "") String customer_ID,
             @RequestParam(defaultValue = "") String customer_name,
             @RequestParam(defaultValue = "") String customer_email,
-            @RequestParam(defaultValue = "") String token,
-            @RequestParam(defaultValue = "") String message_customer
+            @RequestParam(defaultValue = "") String message_customer,
+            @RequestParam(defaultValue = "") String message_id
 
     ) throws JSONException {
 
         Map<String, Object> response = new HashMap<>();
-
         List<Map<String, String>> resultMsg = new ArrayList<>();
 
 
         if (
+                message_id.equals("")||
                 customer_name.equals("") ||
                 customer_email.equals("") ||
                         message_customer.equals("")){
@@ -56,13 +55,7 @@ public class CustomerMessageController {
 
         }
 
-//        validate JWT
-        boolean jwtencoderesult = false;
 
-        JWT_Security_Encode_Decode_Java encode_Decode_Java = new JWT_Security_Encode_Decode_Java();
-        jwtencoderesult = encode_Decode_Java.deCodeJWT_validate(token, customer_email, customer_ID);
-
-        if (jwtencoderesult) {
             //====================== Create date ======================//
 
             Calendar currentDate111 = Calendar.getInstance();
@@ -81,7 +74,7 @@ public class CustomerMessageController {
             Statement statementtAuth = null;
             ResultSet resultSettAuth = null;
             Connection conntAuth = null;
-            String sql = "insert into customer_message (customer_id, customer_name, customer_email, date_time, message_customer) " +
+            String sql = "insert into customer_message (customer_name, customer_email, date_time, message_customer, message_id) " +
                     "values (?, ?, ?, ?, ?); ";
             try {
                 dbConnectionPool = new
@@ -92,11 +85,12 @@ public class CustomerMessageController {
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
-                statement.setString(1, customer_ID);
-                statement.setString(2, customer_name);
-                statement.setString(3, customer_email);
-                statement.setString(4, datepro111);
-                statement.setString(5, message_customer);
+                statement.setString(1, customer_name);
+                statement.setString(2, customer_email);
+                statement.setString(3, datepro111);
+                statement.setString(4, message_customer);
+                statement.setString(5, message_id);
+
                 int rowsUpdated = statement.executeUpdate();
 
                 if (rowsUpdated > 0) {
@@ -118,13 +112,7 @@ public class CustomerMessageController {
             }
 
 //=========================== DB ===========================//
-        } else {
 
-            response.put("resultCode", "498");
-            response.put("ResultMsg", "Invalid_Token");
-            return ResponseEntity.ok(response);
-
-        }
         response.put("resultCode", "000");
         response.put("resultMsg", "NULL");
 
