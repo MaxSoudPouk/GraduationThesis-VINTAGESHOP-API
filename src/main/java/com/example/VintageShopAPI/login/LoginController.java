@@ -62,10 +62,10 @@ public class LoginController {
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
 
-        String sql = "SELECT customer_id,customer_first_name,customer_url_image " +
+        String sql = "SELECT customer_id,customer_first_name,customer_url_image,customer_phonenumber " +
                 "from customer_tb  where customer_email= '" + customer_email + "' and customer_password = '" + customer_password + "'  LIMIT 1";
-        String sqladmin = "SELECT customer_id,customer_first_name,customer_url_image " +
-                "from admin_tb  where customer_email= '" + customer_email + "' and customer_password = '" + customer_password + "'  LIMIT 1";
+        String sqladmin = "SELECT admin_id,admin_first_name,admin_url_image,admin_phonenumber " +
+                "from admin_tb  where admin_email= '" + customer_email + "' and admin_password = '" + customer_password + "'  LIMIT 1";
         //========================== DB CONFIG END ==========================//
         if (user_detail.equals("Customer User")) {
             try {
@@ -79,11 +79,13 @@ public class LoginController {
 
                 ResultSet resultSet = statement.executeQuery();
 
-
                 // System.out.println("sql====="+ sql);
                 if (resultSet != null && resultSet.next()) {
+
                     String Customer_ID = resultSet.getString("customer_id");
                     String customerurlimage = resultSet.getString("customer_url_image");
+                    String user_phone = resultSet.getString("customer_phonenumber");
+
 
 
                     // Gen JWT
@@ -103,7 +105,7 @@ public class LoginController {
                     response.put("Customer_Email", customer_email);
                     response.put("customer_url_image", customerurlimage);
                     response.put("user_detail", "Customer User");
-
+                    response.put("user_phone", user_phone);
 
                     return ResponseEntity.ok(response);
                 } else {
@@ -115,7 +117,7 @@ public class LoginController {
 
             } catch (SQLException ex) {
 
-                response.put("resultCode", "216");
+                response.put("resultCode", "2166");
                 response.put("resultMsg", "Error query Data Product");
                 response.put("extraPara", "");
 
@@ -157,11 +159,11 @@ public class LoginController {
 
                 ResultSet resultSet = statement.executeQuery();
 
-
                 // System.out.println("sql====="+ sql);
                 if (resultSet != null && resultSet.next()) {
-                    String Customer_ID = resultSet.getString("customer_id");
-                    String customerurlimage = resultSet.getString("customer_url_image");
+                    String Customer_ID = resultSet.getString("admin_id");
+                    String customerurlimage = resultSet.getString("admin_url_image");
+                    String user_phone = resultSet.getString("admin_phonenumber");
 
 
                     // Gen JWT
@@ -181,6 +183,7 @@ public class LoginController {
                     response.put("Customer_Email", customer_email);
                     response.put("customer_url_image", customerurlimage);
                     response.put("user_detail", user_detail);
+                    response.put("user_phone", user_phone);
 
 
                     return ResponseEntity.ok(response);
