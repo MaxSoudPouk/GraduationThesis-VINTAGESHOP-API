@@ -57,8 +57,13 @@ public class ShowAllProductCustomerController {
         Statement statementtAuth = null;
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
-        String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " + "FROM category_product  CP " + "JOIN products_tb  P ON CP.product_id = P.product_id " + "JOIN products_attribute PA ON P.product_id = PA.product_id " + "JOIN details D ON P.detail_id = D.detail_id " + "JOIN descriptions DSC ON P.description_id = DSC.description_id " + "JOIN pos_image PI ON P.image_id = PI.image_id ";
-//=========================== DB ===========================//
+        String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, P.product_status, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 \n" +
+                "FROM category_product  CP " +
+                "JOIN products_tb  P ON CP.product_id = P.product_id " +
+                "JOIN products_attribute PA ON P.product_id = PA.product_id " +
+                "JOIN details D ON P.detail_id = D.detail_id " +
+                "JOIN descriptions DSC ON P.description_id = DSC.description_id " +
+                "JOIN pos_image PI ON P.image_id = PI.image_id ";
 
 //=========================== vintage0001 ===========================//
 
@@ -75,6 +80,7 @@ public class ShowAllProductCustomerController {
                     Map<String, String> product_detail = new HashMap<>();
 
                     String productId = resultSet.getString("product_id");
+                    String product_status = resultSet.getString("product_status");
                     String productName = resultSet.getString("product_name");
                     String detailId = resultSet.getString("detail_id");
                     String descriptionId = resultSet.getString("description_id");
@@ -86,6 +92,7 @@ public class ShowAllProductCustomerController {
 
 
                     product_detail.put("productId", String.valueOf(productId));
+                    product_detail.put("ProductStatus", String.valueOf(product_status));
                     product_detail.put("productName", String.valueOf(productName));
                     product_detail.put("DetailID", String.valueOf(detailId));
                     product_detail.put("DescriptionID", String.valueOf(descriptionId));

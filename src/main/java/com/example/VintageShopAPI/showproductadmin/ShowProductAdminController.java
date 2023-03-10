@@ -99,6 +99,8 @@ public class ShowProductAdminController {
                     String imageUrl4 = resultSet.getString("image_url_4");
                     String imageUrl5 = resultSet.getString("image_url_5");
 
+                    System.out.println("product_status == ");
+
 
                     product_detail.put("productId", String.valueOf(productId));
                     product_detail.put("productName", String.valueOf(productName));
