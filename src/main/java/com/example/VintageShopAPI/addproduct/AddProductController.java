@@ -156,6 +156,7 @@ public class AddProductController extends Thread {
         }
 
 
+        int product_status = 1;
         PreparedStatement pstmt;
                     ResultSet rs;
         DatabaseConnectionPool dbConnectionPool = null;
@@ -167,7 +168,7 @@ public class AddProductController extends Thread {
 
         String sql1 = "insert into category_product (category_id, product_id) values (?, ?)";
         String sql2 = "insert into pos_image (image_id, image_url_1, image_url_2, image_url_3, image_url_4, image_url_5) values (?, ?, ?, ?, ?, ?)";
-        String sql3 = "insert into products_tb (product_id, detail_id, description_id, product_name, image_id) values (?, ?, ?, ?, ?)";
+        String sql3 = "insert into products_tb (product_id, detail_id, description_id, product_name, image_id,product_status) values (?, ?, ?, ?, ?, ?)";
         String sql4 = "insert into descriptions (description_id, description) values (?, ?)";
         String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount) values (?, ?, ?, ?, ?)";
         String sql6 = "insert into details (detail_id, detail) values (?, ?)";
@@ -202,6 +203,7 @@ public class AddProductController extends Thread {
             statement3.setString(3, description_id);
             statement3.setString(4, productName);
             statement3.setString(5, image_id);
+            statement3.setInt(6, product_status);
             int rowsUpdated3 = statement3.executeUpdate();
 
             statement4.setString(1, description_id);

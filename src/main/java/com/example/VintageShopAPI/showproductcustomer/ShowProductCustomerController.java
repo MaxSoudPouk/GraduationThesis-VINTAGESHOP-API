@@ -29,7 +29,7 @@ public class ShowProductCustomerController {
 
     }
 
-    @PostMapping("/v1/ShowProductCustomer")
+    @PostMapping("/v1/showProductCustomer")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String showProductname
 
@@ -58,7 +58,7 @@ public class ShowProductCustomerController {
         Statement statementtAuth = null;
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
-        String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, P.product_status, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 \n" +
+        String sql = "SELECT CP.product_id, P.product_name, P.detail_id, P.description_id, P.product_status, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " +
                 "FROM category_product  CP " +
                 "JOIN products_tb  P ON CP.product_id = P.product_id " +
                 "JOIN products_attribute PA ON P.product_id = PA.product_id " +
@@ -105,8 +105,6 @@ public class ShowProductCustomerController {
                     String imageUrl3 = resultSet.getString("image_url_3");
                     String imageUrl4 = resultSet.getString("image_url_4");
                     String imageUrl5 = resultSet.getString("image_url_5");
-
-
 
                     product_detail.put("productId", String.valueOf(productId));
                     product_detail.put("ProductStatus", String.valueOf(product_status));
@@ -173,7 +171,6 @@ public class ShowProductCustomerController {
                     String imageUrl3 = resultSet.getString("image_url_3");
                     String imageUrl4 = resultSet.getString("image_url_4");
                     String imageUrl5 = resultSet.getString("image_url_5");
-
 
                     product_detail.put("productId", String.valueOf(productId));
                     product_detail.put("ProductStatus", String.valueOf(product_status));

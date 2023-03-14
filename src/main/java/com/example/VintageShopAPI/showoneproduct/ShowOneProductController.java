@@ -60,7 +60,7 @@ public class ShowOneProductController {
         Statement statementtAuth = null;
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
-        String sql = "SELECT CP.product_id, CP.category_id, C.category_name, P.product_name, P.product_status P.detail_id, P.description_id, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " +
+        String sql = "SELECT CP.product_id, CP.category_id, C.category_name, P.product_name, P.detail_id, P.description_id, PA.product_amount, D.detail, DSC.description, PA.price, PI.image_url_1, PI.image_url_2, PI.image_url_3, PI.image_url_4, PI.image_url_5 " +
                 "FROM category_product CP " +
                 "JOIN products_tb P ON CP.product_id = P.product_id " +
                 "JOIN products_attribute PA ON P.product_id = PA.product_id " +
@@ -98,7 +98,6 @@ public class ShowOneProductController {
                     Map<String, String> product_detail = new HashMap<>();
 
                     String productId = resultSet.getString("product_id");
-                    String product_status = resultSet.getString("product_status");
                     String productName = resultSet.getString("product_name");
                     String detailId = resultSet.getString("detail_id");
                     String descriptionId = resultSet.getString("description_id");
@@ -115,7 +114,6 @@ public class ShowOneProductController {
 
 
                     product_detail.put("productId", String.valueOf(productId));
-                    product_detail.put("ProductStatus", String.valueOf(product_status));
                     product_detail.put("productName", String.valueOf(productName));
                     product_detail.put("DetailID", String.valueOf(detailId));
                     product_detail.put("DescriptionID", String.valueOf(descriptionId));
