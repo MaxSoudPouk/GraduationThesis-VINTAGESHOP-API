@@ -59,13 +59,36 @@ public class CheckoutController {
         String datepro111 = dateNow111.toString();
 
 //====================== END Create date ======================//
+        int product_status = 1;
+        PreparedStatement pstmt;
+        ResultSet rs;
+        DatabaseConnectionPool dbConnectionPool = null;
+        Connection connection1 = null;
+        String strRetunr = null;
+        Statement statementtAuth = null;
+        ResultSet resultSettAuth = null;
+        Connection conntAuth = null;
+        try {
+            dbConnectionPool = new DatabaseConnectionPool(
+                    Config.driverServr,
+                    Config.dburlServr,
+                    Config.dbUserNameServr,
+                    Config.dbPasswordServr);
+            connection1 = dbConnectionPool.getConnection();
 
-        for (int i = 0; i < order.length(); i++) {
+        String sql = "insert into order_tb (order_id, customer_id, total_price, order_date, order_status, transaction_id, customer_name) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql1 = "SELECT product_amount FROM products_attribute WHERE product_id = ? AND price = ?";
+        String sql2 = "insert into products_attribute (product_amount) values (?)";
+            String updateProductAmount = "UPDATE products_attribute SET product_amount = ? WHERE product_id = ?";
+        String updateProductStatus = "UPDATE products_tb SET product_status = ? WHERE product_id = ?";
+
+
+            for (int i = 0; i < order.length(); i++) {
             JSONObject innerObj = order.getJSONObject(i);
 
             String product_id = (String) innerObj.get("product_id");
             String product_name = (String) innerObj.get("product_name");
-            String product_quantity = (String) innerObj.get("product_quantity");
+            int product_quantity = (int) innerObj.get("product_quantity");
             String product_price = (String) innerObj.get("product_price");
 
             if (
@@ -74,7 +97,6 @@ public class CheckoutController {
                             || total_price.isEmpty()
                             || order_id.isEmpty()
                             || product_name.isEmpty()
-                            || product_quantity.isEmpty()
                             || product_price.isEmpty()
                             || customer_id.isEmpty()
                             || customer_name.isEmpty()
@@ -89,26 +111,82 @@ public class CheckoutController {
                 return ResponseEntity.ok(response);
 
             }
+
+
+
+            PreparedStatement statement = connection1.prepareStatement(sql1);
+            statement.setString(1, "4ce6c726-933b-42bc-8a91-a1765f754c4b");
+            statement.setDouble(2, 120);
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            while (resultSet.next()) {
+                // System.out.println("An existing user was updated successfully!");
+                String product_amount = resultSet.getString("product_amount");
+
+                int amount = Integer.parseInt(product_amount);
+                System.out.println( "product_quantity ==== " + product_quantity);
+                System.out.println( "amount ==== " + amount);
+                if(amount >= product_quantity){
+                    int new_amount = (amount - product_quantity);
+                    System.out.println( "new_amount ==== " + new_amount);
+
+                    if( new_amount > 0){
+                        PreparedStatement statement1 = connection1.prepareStatement(updateProductAmount);
+                        statement1.setInt(1, new_amount);
+                        statement1.setString(2, "4ce6c726-933b-42bc-8a91-a1765f754c4b");
+                        int rowsUpdated2 = statement1.executeUpdate();
+
+                        if (rowsUpdated2 > 0) {
+                            // System.out.println("An existing user was updated successfully!");
+
+                            response.put("resultCode", "200");
+                            response.put("resultMsg", "OK, success");
+
+                            return ResponseEntity.ok(response);
+                        }
+                    }else {
+
+
+
+                        PreparedStatement statement10 = connection1.prepareStatement(updateProductAmount);
+                        statement10.setInt(1, new_amount);
+                        statement10.setString(2, "4ce6c726-933b-42bc-8a91-a1765f754c4b");
+                        System.out.println( "new_amount ==== " + new_amount);
+
+                        int rowsUpdated2 = statement10.executeUpdate();
+
+                        if (rowsUpdated2 > 0) {
+                            int status_now = 0;
+                            PreparedStatement statement3 = connection1.prepareStatement(updateProductStatus);
+                            statement3.setInt(1, status_now);
+                            statement3.setString(2, "4ce6c726-933b-42bc-8a91-a1765f754c4b");
+                            int rowsUpdated3 = statement3.executeUpdate();
+                            if (rowsUpdated3 > 0) {
+                                // System.out.println("An existing user was updated successfully!");
+
+                                response.put("resultCode", "200");
+                                response.put("resultMsg", "OK, success");
+
+                                return ResponseEntity.ok(response);
+                            }
+                        }
+                    }
+
+
+                }else {
+                    response.put("resultCode", "40633");
+                    response.put("resultMsg", "parameter not acceptable");//สินค้าหมด
+                    response.put("extraPara", "");
+
+                    return ResponseEntity.ok(response);
+                }
+            }
+
         }
-            int product_status = 1;
-            PreparedStatement pstmt;
-            ResultSet rs;
-            DatabaseConnectionPool dbConnectionPool = null;
-            Connection connection1 = null;
-            String strRetunr = null;
-            Statement statementtAuth = null;
-            ResultSet resultSettAuth = null;
-            Connection conntAuth = null;
 
-            String sql = "insert into order_tb (order_id, customer_id, total_price, order_date, order_status, transaction_id, customer_name) values (?, ?, ?, ?, ?, ?, ?)";
 
-            try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
-                connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
                 statement.setString(1, order_id);
