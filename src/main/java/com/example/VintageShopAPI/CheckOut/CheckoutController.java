@@ -44,12 +44,12 @@ public class CheckoutController {
         JSONArray order = jObj.getJSONArray("order");
         String customer_id = jObj.getString("customer_id");
         String order_status = jObj.getString("order_status");
-        double total_price = jObj.getDouble("total_price");
+        int total_prices = jObj.getInt("total_price");
         String order_id = jObj.getString("order_id");
         String customer_name = jObj.getString("customer_name");
         String transaction_id = jObj.getString("transaction_id");
 
-
+        double total_price = Double.parseDouble(String.valueOf(total_prices));
         //====================== Create date ======================//
 
         Calendar currentDate111 = Calendar.getInstance();
@@ -93,7 +93,9 @@ public class CheckoutController {
             String product_id = (String) innerObj.get("product_id");
             String product_name = (String) innerObj.get("product_name");
             int product_quantity = (int) innerObj.get("product_quantity");
-            double product_price = (double) innerObj.get("product_price");
+            String product_prices = (String) innerObj.get("product_price");
+
+            double product_price = Double.parseDouble(product_prices);
 
                 person1.put("product_name", String.valueOf(product_name));//LOOP product_name
                 person1.put("product_id", String.valueOf(product_id));//LOOP product_id
