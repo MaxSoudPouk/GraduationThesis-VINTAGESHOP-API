@@ -8,10 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONPointerException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -21,6 +18,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @RestController
+@CrossOrigin
 public class CheckoutController {
     public static HttpServletRequest request;
 
@@ -34,11 +32,13 @@ public class CheckoutController {
             @RequestBody String orders
 
     )  throws NoSuchAlgorithmException, IOException, JSONException, JSONPointerException {
-        System.out.println("order =====" + orders);
+//        System.out.println("order =====" + orders);
 
 
         Map<String, Object> response = new HashMap<>();
         List<Map<String, String>> resultMsg = new ArrayList<>();
+        List<Map<String, String>> resultPrice = new ArrayList<>();
+        ArrayList<Double> valueprice = new ArrayList<Double>();
 
         JSONObject jObj = new JSONObject(orders);
         JSONArray order = jObj.getJSONArray("order");
@@ -88,12 +88,15 @@ public class CheckoutController {
 
             for (int i = 0; i < order.length(); i++) {
             JSONObject innerObj = order.getJSONObject(i);
-            Map<String, String> person1 = new HashMap<>();
+                Map<String, String> person1 = new HashMap<>();
+                ArrayList<Double> total_pricess = new ArrayList<Double>();
 
             String product_id = (String) innerObj.get("product_id");
             String product_name = (String) innerObj.get("product_name");
             int product_quantity = (int) innerObj.get("product_quantity");
             String product_prices = (String) innerObj.get("product_price");
+
+
 
             double product_price = Double.parseDouble(product_prices);
 
@@ -102,7 +105,7 @@ public class CheckoutController {
 
 
 
-            System.out.println("product_id ==== " + product_id);
+//            System.out.println("product_id ==== " + product_id);
 
 
 
@@ -142,14 +145,24 @@ public class CheckoutController {
 
 
                 int amount = Integer.parseInt(product_amount);
-                System.out.println( "product_quantity ==== " + product_quantity);
-                System.out.println( "product_statusDB ==== " + product_statusDB);
+//                System.out.println( "product_statusDB ==== " + product_statusDB);
                 person1.put("product_status", String.valueOf(product_statusDB));//LOOP product_status
 
-                System.out.println( "amount ==== " + amount);
+                if(product_statusDB.equals("1")){
+                    person1.put("product_price", (product_prices));//LOOP product_prices
+                    total_pricess.add(product_price);//LOOP product_prices
+
+                } else if (product_statusDB.equals("0")) {
+                    double product_price_active = .00;
+//                    System.out.println( "product_prices ==== " + product_prices);
+                    total_pricess.add(product_price_active);//LOOP product_prices
+
+                }
+
+//                System.out.println( "amount ==== " + amount);
                 if(amount >= product_quantity){
                     int new_amount = (amount - product_quantity);
-                    System.out.println( "new_amount ==== " + new_amount);
+//                    System.out.println( "new_amount ==== " + new_amount);
 
                     if( new_amount > 0){
                         PreparedStatement statement1 = connection1.prepareStatement(updateProductAmount);
@@ -165,7 +178,7 @@ public class CheckoutController {
                         PreparedStatement statement10 = connection1.prepareStatement(updateProductAmount);
                         statement10.setInt(1, new_amount);
                         statement10.setString(2, product_id);
-                        System.out.println( "new_amount ==== " + new_amount);
+//                        System.out.println( "new_amount ==== " + new_amount);
 
                         int rowsUpdated2 = statement10.executeUpdate();
 
@@ -183,8 +196,15 @@ public class CheckoutController {
 
                 }
             }
+
+                double sum = 0;
+                for (double num : total_pricess) {
+                    sum += num;
+                }
+                valueprice.add(sum);
                 resultMsg.add(person1);
         }
+
 
 
                 PreparedStatement statement = connection1.prepareStatement(sql);
@@ -196,7 +216,6 @@ public class CheckoutController {
                 statement.setString(5, order_status);
                 statement.setString(6, transaction_id);
                 statement.setString(7, customer_name);
-                System.out.println("========================");
 
                 int rowsUpdated1 = statement.executeUpdate();
 
@@ -206,10 +225,17 @@ public class CheckoutController {
                 // System.out.println("sql====="+ sql);
                 if (rowsUpdated1 > 0) {
                     // System.out.println("An existing user was updated successfully!");
+                    double sumtotal_price = 0;
+                    for (double num : valueprice) {
+                        sumtotal_price += num;
+                    }
 
                     response.put("resultCode", "200");
                     response.put("resultMsg", "OK, success");
                     response.put("order_detail", resultMsg);
+                    response.put("total_price", sumtotal_price);
+                    response.put("date_price", datepro111);
+                    response.put("transaction_id", transaction_id);
 
                     return ResponseEntity.ok(response);
                 }
