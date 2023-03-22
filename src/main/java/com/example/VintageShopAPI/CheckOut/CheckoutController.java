@@ -76,15 +76,18 @@ public class CheckoutController {
                     Config.dbPasswordServr);
             connection1 = dbConnectionPool.getConnection();
 
-        String sql = "insert into order_tb (order_id, customer_id, total_price, order_date, order_status, transaction_id, customer_name) values (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into order_tb (order_id, customer_id, total_price, order_date, order_status, transaction_id, customer_name, order_amount) values (?, ?, ?, ?, ?, ?, ?, ?)";
         String sql1 = "SELECT pa.product_amount,pt.product_status " +
                 "FROM products_attribute pa " +
                 "JOIN products_tb pt ON pa.product_id = pt.product_id " +
                 "WHERE pa.product_id = ? AND pa.price = ? ";
-        String sql2 = "insert into products_attribute (product_amount) values (?)";
+        String sql2 = "INSERT INTO order_detail (order_id, product_id, price, quantity, product_name)\n" +
+                "VALUES (?, ?, ?, ?, ?);";
         String updateProductAmount = "UPDATE products_attribute SET product_amount = ? WHERE product_id = ?";
         String updateProductStatus = "UPDATE products_tb SET product_status = ? WHERE product_id = ?";
 
+            String amount_order = String.valueOf(order.length());
+            System.out.println("amount_order ==== " + amount_order);
 
             for (int i = 0; i < order.length(); i++) {
             JSONObject innerObj = order.getJSONObject(i);
@@ -128,6 +131,15 @@ public class CheckoutController {
                 return ResponseEntity.ok(response);
 
             }
+
+                PreparedStatement statement2 = connection1.prepareStatement(sql2);
+                statement2.setString(1, order_id);
+                statement2.setString(2, product_id);
+                statement2.setDouble(3, product_price);
+                statement2.setInt(4, product_quantity);
+                statement2.setString(5, product_name);
+
+                int rowsUpdated4 = statement2.executeUpdate();
 
 
 
@@ -216,6 +228,7 @@ public class CheckoutController {
                 statement.setString(5, order_status);
                 statement.setString(6, transaction_id);
                 statement.setString(7, customer_name);
+                statement.setString(8, amount_order);
 
                 int rowsUpdated1 = statement.executeUpdate();
 
