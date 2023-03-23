@@ -47,9 +47,11 @@ public class ShowSaleitemController {
         Connection conntAuth = null;
         String sql = "SELECT o.order_id, o.customer_id, o.order_amount, o.order_date, c.customer_first_name, c.customer_phonenumber, c.customer_address \n" +
                 "FROM order_tb o \n" +
-                "JOIN customer_tb c ON o.customer_id = c.customer_id;";
+                "JOIN customer_tb c ON o.customer_id = c.customer_id AND o.deleted_status = '1';";
 
 //=========================== vintage0001 ===========================//
+
+
 
 
         try {

@@ -76,7 +76,7 @@ public class CheckoutController {
                     Config.dbPasswordServr);
             connection1 = dbConnectionPool.getConnection();
 
-        String sql = "insert into order_tb (order_id, customer_id, total_price, order_date, order_status, transaction_id, customer_name, order_amount) values (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "insert into order_tb (order_id, customer_id, total_price, order_date, order_status, transaction_id, customer_name, order_amount, deleted_status) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         String sql1 = "SELECT pa.product_amount,pt.product_status " +
                 "FROM products_attribute pa " +
                 "JOIN products_tb pt ON pa.product_id = pt.product_id " +
@@ -229,6 +229,7 @@ public class CheckoutController {
                 statement.setString(6, transaction_id);
                 statement.setString(7, customer_name);
                 statement.setString(8, amount_order);
+                statement.setString(9, "1");
 
                 int rowsUpdated1 = statement.executeUpdate();
 
