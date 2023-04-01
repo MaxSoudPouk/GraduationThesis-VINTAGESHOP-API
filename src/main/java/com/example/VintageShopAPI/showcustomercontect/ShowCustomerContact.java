@@ -77,7 +77,6 @@ public class ShowCustomerContact {
                 String customer_phonenumber = resultSet.getString("customer_phonenumber");
 
 
-
                 product_detail.put("customer_email", String.valueOf(customer_email));
                 product_detail.put("message_customer", String.valueOf(message_customer));
                 product_detail.put("date_time", String.valueOf(date_time));

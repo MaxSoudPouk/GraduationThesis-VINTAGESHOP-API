@@ -27,6 +27,7 @@ public class CustomerMessageController {
         CustomerMessageController.request = request;
 
     }
+
     @PostMapping("/v1/CustomerMessage")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String customer_name,
@@ -39,8 +40,7 @@ public class CustomerMessageController {
 
         Map<String, Object> response = new HashMap<>();
         if (
-                customer_id.equals(""))
-                        {
+                customer_id.equals("")) {
 
 
             response.put("resultCode", "405");
@@ -53,10 +53,10 @@ public class CustomerMessageController {
 
 
         if (
-                message_id.equals("")||
-                customer_name.equals("") ||
-                customer_email.equals("") ||
-                        message_customer.equals("")){
+                message_id.equals("") ||
+                        customer_name.equals("") ||
+                        customer_email.equals("") ||
+                        message_customer.equals("")) {
 
 
             response.put("resultCode", "406");
@@ -68,34 +68,34 @@ public class CustomerMessageController {
         }
 
 
-            //====================== Create date ======================//
+        //====================== Create date ======================//
 
-            Calendar currentDate111 = Calendar.getInstance();
-            SimpleDateFormat formatter111 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formatter111.setTimeZone(TimeZone.getTimeZone("Asia/Bangkok"));
-            String dateNow111 = formatter111.format(currentDate111.getTime());
-            String datepro111 = dateNow111.toString();
+        Calendar currentDate111 = Calendar.getInstance();
+        SimpleDateFormat formatter111 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter111.setTimeZone(TimeZone.getTimeZone("Asia/Bangkok"));
+        String dateNow111 = formatter111.format(currentDate111.getTime());
+        String datepro111 = dateNow111.toString();
 
-            //====================== END Create date ======================//
+        //====================== END Create date ======================//
 //=========================== DB ===========================//
-            PreparedStatement pstmt;
-            ResultSet rs;
-            DatabaseConnectionPool dbConnectionPool = null;
-            Connection connection1 = null;
-            String strRetunr = null;
-            Statement statementtAuth = null;
-            ResultSet resultSettAuth = null;
-            Connection conntAuth = null;
-            String sql = "insert into customer_message (customer_name, customer_email, date_time, message_customer, message_id, customer_id)\n" +
-                    "                    values ('"+customer_name+"', '"+customer_email+"', NOW(), '"+message_customer+"', '"+message_id+"', '"+customer_id+"'); ";
-            try {
-                dbConnectionPool = new
-                        DatabaseConnectionPool(Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
-                connection1 = dbConnectionPool.getConnection();
-                PreparedStatement statement = connection1.prepareStatement(sql);
+        PreparedStatement pstmt;
+        ResultSet rs;
+        DatabaseConnectionPool dbConnectionPool = null;
+        Connection connection1 = null;
+        String strRetunr = null;
+        Statement statementtAuth = null;
+        ResultSet resultSettAuth = null;
+        Connection conntAuth = null;
+        String sql = "insert into customer_message (customer_name, customer_email, date_time, message_customer, message_id, customer_id)\n" +
+                "                    values ('" + customer_name + "', '" + customer_email + "', NOW(), '" + message_customer + "', '" + message_id + "', '" + customer_id + "'); ";
+        try {
+            dbConnectionPool = new
+                    DatabaseConnectionPool(Config.driverServr,
+                    Config.dburlServr,
+                    Config.dbUserNameServr,
+                    Config.dbPasswordServr);
+            connection1 = dbConnectionPool.getConnection();
+            PreparedStatement statement = connection1.prepareStatement(sql);
 
 //                statement.setString(1, customer_name);
 //                statement.setString(2, customer_email);
@@ -104,25 +104,25 @@ public class CustomerMessageController {
 //                statement.setString(5, message_id);
 //                statement.setString(5, customer_id);
 
-                int rowsUpdated = statement.executeUpdate();
+            int rowsUpdated = statement.executeUpdate();
 
-                if (rowsUpdated > 0) {
+            if (rowsUpdated > 0) {
 
-                    response.put("resultCode", "200");
-                    response.put("resultMsg", "OK, success");
-                    response.put("date", datepro111);
-
-                    return ResponseEntity.ok(response);
-                }
-
-            } catch (SQLException ex) {
-
-                response.put("resultCode", "216");
-                response.put("resultMsg", "Error query Data Product");
-                response.put("extraPara", "");
+                response.put("resultCode", "200");
+                response.put("resultMsg", "OK, success");
+                response.put("date", datepro111);
 
                 return ResponseEntity.ok(response);
             }
+
+        } catch (SQLException ex) {
+
+            response.put("resultCode", "216");
+            response.put("resultMsg", "Error query Data Product");
+            response.put("extraPara", "");
+
+            return ResponseEntity.ok(response);
+        }
 
 //=========================== DB ===========================//
 

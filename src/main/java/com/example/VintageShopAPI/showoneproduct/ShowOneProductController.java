@@ -30,6 +30,7 @@ public class ShowOneProductController {
         ShowOneProductController.request = request;
 
     }
+
     @GetMapping("/v1/ShowOneProductCustomer")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String productIDShow
@@ -39,7 +40,7 @@ public class ShowOneProductController {
 
         List<Map<String, String>> resultMsg = new ArrayList<>();
 
-        if (productIDShow.equals("") ) {
+        if (productIDShow.equals("")) {
 
 
             response.put("resultCode", "406");
@@ -81,71 +82,71 @@ public class ShowOneProductController {
 //        if (jwtencoderesult) {
 
 
-            try {
-                dbConnectionPool = new DatabaseConnectionPool(
-                        Config.driverServr,
-                        Config.dburlServr,
-                        Config.dbUserNameServr,
-                        Config.dbPasswordServr);
-                connection1 = dbConnectionPool.getConnection();
-                PreparedStatement statement = connection1.prepareStatement(sql);
+        try {
+            dbConnectionPool = new DatabaseConnectionPool(
+                    Config.driverServr,
+                    Config.dburlServr,
+                    Config.dbUserNameServr,
+                    Config.dbPasswordServr);
+            connection1 = dbConnectionPool.getConnection();
+            PreparedStatement statement = connection1.prepareStatement(sql);
 
-                statement.setString(1, productIDShow);
-                ResultSet resultSet = statement.executeQuery();
-
-
-                while (resultSet.next()) {
-                    Map<String, String> product_detail = new HashMap<>();
-
-                    String productId = resultSet.getString("product_id");
-                    String productName = resultSet.getString("product_name");
-                    String detailId = resultSet.getString("detail_id");
-                    String descriptionId = resultSet.getString("description_id");
-                    String productAmount = resultSet.getString("product_amount");
-                    String detail = resultSet.getString("detail");
-                    String description = resultSet.getString("description");
-                    double price = resultSet.getInt("price");
-                    String imageUrl1 = resultSet.getString("image_url_1");
-                    String imageUrl2 = resultSet.getString("image_url_2");
-                    String imageUrl3 = resultSet.getString("image_url_3");
-                    String imageUrl4 = resultSet.getString("image_url_4");
-                    String imageUrl5 = resultSet.getString("image_url_5");
-                    String categoryName = resultSet.getString("category_name");
+            statement.setString(1, productIDShow);
+            ResultSet resultSet = statement.executeQuery();
 
 
-                    product_detail.put("productId", String.valueOf(productId));
-                    product_detail.put("productName", String.valueOf(productName));
-                    product_detail.put("DetailID", String.valueOf(detailId));
-                    product_detail.put("DescriptionID", String.valueOf(descriptionId));
-                    product_detail.put("ProductAmount", String.valueOf(productAmount));
-                    product_detail.put("Detail", String.valueOf(detail));
-                    product_detail.put("Description", String.valueOf(description));
-                    product_detail.put("Price", String.valueOf(price));
-                    product_detail.put("ImageURL1", String.valueOf(imageUrl1));
-                    product_detail.put("ImageURL2", String.valueOf(imageUrl2));
-                    product_detail.put("ImageURL3", String.valueOf(imageUrl3));
-                    product_detail.put("ImageURL4", String.valueOf(imageUrl4));
-                    product_detail.put("ImageURL5", String.valueOf(imageUrl5));
-                    product_detail.put("CategoryName", String.valueOf(categoryName));
+            while (resultSet.next()) {
+                Map<String, String> product_detail = new HashMap<>();
 
-                    resultMsg.add(product_detail);
+                String productId = resultSet.getString("product_id");
+                String productName = resultSet.getString("product_name");
+                String detailId = resultSet.getString("detail_id");
+                String descriptionId = resultSet.getString("description_id");
+                String productAmount = resultSet.getString("product_amount");
+                String detail = resultSet.getString("detail");
+                String description = resultSet.getString("description");
+                double price = resultSet.getInt("price");
+                String imageUrl1 = resultSet.getString("image_url_1");
+                String imageUrl2 = resultSet.getString("image_url_2");
+                String imageUrl3 = resultSet.getString("image_url_3");
+                String imageUrl4 = resultSet.getString("image_url_4");
+                String imageUrl5 = resultSet.getString("image_url_5");
+                String categoryName = resultSet.getString("category_name");
 
 
-                }
-            } catch (SQLException ex) {
+                product_detail.put("productId", String.valueOf(productId));
+                product_detail.put("productName", String.valueOf(productName));
+                product_detail.put("DetailID", String.valueOf(detailId));
+                product_detail.put("DescriptionID", String.valueOf(descriptionId));
+                product_detail.put("ProductAmount", String.valueOf(productAmount));
+                product_detail.put("Detail", String.valueOf(detail));
+                product_detail.put("Description", String.valueOf(description));
+                product_detail.put("Price", String.valueOf(price));
+                product_detail.put("ImageURL1", String.valueOf(imageUrl1));
+                product_detail.put("ImageURL2", String.valueOf(imageUrl2));
+                product_detail.put("ImageURL3", String.valueOf(imageUrl3));
+                product_detail.put("ImageURL4", String.valueOf(imageUrl4));
+                product_detail.put("ImageURL5", String.valueOf(imageUrl5));
+                product_detail.put("CategoryName", String.valueOf(categoryName));
 
-                response.put("resultCode", "216");
-                response.put("resultMsg", "Error query Data Product");
-                response.put("extraPara", "");
+                resultMsg.add(product_detail);
 
-                return ResponseEntity.ok(response);
+
             }
+        } catch (SQLException ex) {
 
-            response.put("resultCode", "200");
-            response.put("productIDShow", "vintage0001");
-            response.put("ProductDetail", resultMsg);
+            response.put("resultCode", "216");
+            response.put("resultMsg", "Error query Data Product");
+            response.put("extraPara", "");
+
             return ResponseEntity.ok(response);
         }
+
+        response.put("resultCode", "200");
+        response.put("productIDShow", "vintage0001");
+        response.put("ProductDetail", resultMsg);
+        return ResponseEntity.ok(response);
+    }
 //        else {
 //
 //            response.put("resultCode", "498");

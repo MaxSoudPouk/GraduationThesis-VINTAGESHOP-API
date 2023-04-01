@@ -162,7 +162,7 @@ public class AddProductController extends Thread {
         int product_status = 1;
         int transaction_status = 2;
         PreparedStatement pstmt;
-                    ResultSet rs;
+        ResultSet rs;
         DatabaseConnectionPool dbConnectionPool = null;
         Connection connection1 = null;
         String strRetunr = null;
@@ -177,7 +177,7 @@ public class AddProductController extends Thread {
         String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount, purchase_price) values (?, ?, ?, ?, ?, ?)";
         String sql6 = "insert into details (detail_id, detail) values (?, ?)";
         String sql7 = "insert into transaction_tb (cost, transaction_id, transaction_status, amount, title, transaction_date, delete_transaction_status, update_transaction_date, type_transaction)\n" +
-                " values ('"+purchaseprice+"', '"+transaction_id+"', '"+transaction_status+"', '"+amoutProduct+"', '"+productName+"',NOW(), ' 1 ', NOW(), 'Product') ";
+                " values ('" + purchaseprice + "', '" + transaction_id + "', '" + transaction_status + "', '" + amoutProduct + "', '" + productName + "',NOW(), ' 1 ', NOW(), 'Product') ";
 
         try {
             dbConnectionPool = new DatabaseConnectionPool(

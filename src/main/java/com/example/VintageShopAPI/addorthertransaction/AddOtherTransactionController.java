@@ -26,6 +26,7 @@ public class AddOtherTransactionController {
         CustomerMessageController.request = request;
 
     }
+
     @PostMapping("/v1/AddOtherTransaction")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam("title") String title,
@@ -37,17 +38,17 @@ public class AddOtherTransactionController {
     ) throws JSONException {
         Map<String, Object> response = new HashMap<>();
         /*
-        * transaction_status = 1 ====> Income
-        * transaction_status = 2 ====> Expenses
-        */
+         * transaction_status = 1 ====> Income
+         * transaction_status = 2 ====> Expenses
+         */
 
         if (
-                title.equals("")||
+                title.equals("") ||
 
-                        transaction_status.equals("")||
-                        transaction_id.equals("")||
+                        transaction_status.equals("") ||
+                        transaction_id.equals("") ||
                         amount.equals("")
-                        ){
+        ) {
 
 
             response.put("resultCode", "406");
@@ -60,10 +61,10 @@ public class AddOtherTransactionController {
 
         int stat = 0;
 
-        if (transaction_status.equals("Income")){
+        if (transaction_status.equals("Income")) {
             stat = 1;
         }
-        if (transaction_status.equals("Expenses")){
+        if (transaction_status.equals("Expenses")) {
             stat = 2;
         }
         //====================== Create date ======================//
@@ -85,7 +86,7 @@ public class AddOtherTransactionController {
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
         String sql = "insert into transaction_tb (cost,transaction_id, transaction_status, amount, title, transaction_date, delete_transaction_status, update_transaction_date, type_transaction)\n" +
-                "                   values ('"+cost +"','"+transaction_id+"', '"+stat+"', '"+amount+"', '"+title+"',NOW(),' 1 ', NOW(), 'Other')\n";
+                "                   values ('" + cost + "','" + transaction_id + "', '" + stat + "', '" + amount + "', '" + title + "',NOW(),' 1 ', NOW(), 'Other')\n";
         try {
             dbConnectionPool = new
                     DatabaseConnectionPool(Config.driverServr,

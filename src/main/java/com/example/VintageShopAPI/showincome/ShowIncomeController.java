@@ -31,9 +31,9 @@ public class ShowIncomeController {
         List<Map<String, String>> resultMsgExpenses = new ArrayList<>();
 
         if (
-                DateStart.equals("")||
+                DateStart.equals("") ||
                         DateEnd.equals("")
-        ){
+        ) {
 
 
             response.put("resultCode", "406");
@@ -55,13 +55,13 @@ public class ShowIncomeController {
         Connection conntAuth = null;
         String sql = "SELECT title, cost, amount, transaction_date, transaction_status, delete_transaction_status, type_transaction \n" +
                 "FROM transaction_tb\n" +
-                "WHERE transaction_status = '1' AND DATE(transaction_date) BETWEEN '"+DateStart+"' AND '"+DateEnd+"';";
+                "WHERE transaction_status = '1' AND DATE(transaction_date) BETWEEN '" + DateStart + "' AND '" + DateEnd + "';";
         String sqlExs = "SELECT title, cost, amount, transaction_date, transaction_status, delete_transaction_status, type_transaction \n" +
                 "FROM transaction_tb\n" +
-                "WHERE transaction_status = '2' AND DATE(transaction_date) BETWEEN '"+DateStart+"' AND '"+DateEnd+"';";
+                "WHERE transaction_status = '2' AND DATE(transaction_date) BETWEEN '" + DateStart + "' AND '" + DateEnd + "';";
         String sql1 = "SELECT customer_name, total_price, order_amount, order_date, IncomeDeleteStatus \n" +
                 "FROM order_tb\n" +
-                "WHERE DATE(order_date) BETWEEN '"+DateStart+"' AND '"+DateEnd+"';";
+                "WHERE DATE(order_date) BETWEEN '" + DateStart + "' AND '" + DateEnd + "';";
 
 //=========================== vintage0001 ===========================//
 
@@ -99,13 +99,10 @@ public class ShowIncomeController {
                 product_detail.put("type", String.valueOf(type_transaction));
 
 
-
                 resultMsg.add(product_detail);
 
 
             }
-
-
 
 
             //Other Expenses
@@ -159,13 +156,10 @@ public class ShowIncomeController {
                 product_detail.put("type", String.valueOf(type_transaction));
 
 
-
-
                 resultMsgExpenses.add(product_detail);
 
 
             }
-
 
 
         } catch (SQLException ex) {
@@ -178,7 +172,6 @@ public class ShowIncomeController {
         }
 
         response.put("resultCode", "200");
-//        response.put("productIDShow", "vintage0001");
         response.put("IncomeDetail", resultMsg);
         response.put("ExpensesDetail", resultMsgExpenses);
         return ResponseEntity.ok(response);

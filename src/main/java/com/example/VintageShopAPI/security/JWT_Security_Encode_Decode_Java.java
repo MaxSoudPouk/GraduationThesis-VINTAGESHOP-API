@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class JWT_Security_Encode_Decode_Java extends Thread {
 
-    
+
 //    
 //    try {
 //		// Create session ID to prevent change password on multy using
@@ -28,53 +28,52 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 //	}
 //    
 
-	//======================================================================================================
-	public String createJWTSec1(long ttlMillis, String customer_email, String Customer_ID) {
+    //======================================================================================================
+    public String createJWTSec1(long ttlMillis, String customer_email, String Customer_ID) {
 
 
+        // The JWT signature algorithm we will be using to sign the token
+        SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
-		// The JWT signature algorithm we will be using to sign the token
-		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+        long nowMillis = System.currentTimeMillis();
+        Date now = new Date(nowMillis);
 
-		long nowMillis = System.currentTimeMillis();
-		Date now = new Date(nowMillis);
+        // We will sign our JWT with our ApiKey secret
+        byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(GlobalParameter.sign_key);
 
-		// We will sign our JWT with our ApiKey secret
-		byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(GlobalParameter.sign_key);
+        Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
-		Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-
-		// Let's set the JWT Claims
+        // Let's set the JWT Claims
 //	JwtBuilder builder = Jwts.builder().setId(id).setIssuedAt(now).setSubject(msisdn).setIssuer(issuer)
 //		.setId(sessionID).signWith(signatureAlgorithm, signingKey);
 
-		//Let's set the JWT Claims
-		JwtBuilder   builder = Jwts.builder().setId(customer_email)
-				.setIssuedAt(now)
-				.setSubject(customer_email) // User Namw
-				.setIssuer(Customer_ID) // User Namw
-				.signWith(signingKey, signatureAlgorithm);
+        //Let's set the JWT Claims
+        JwtBuilder builder = Jwts.builder().setId(customer_email)
+                .setIssuedAt(now)
+                .setSubject(customer_email) // User Namw
+                .setIssuer(Customer_ID) // User Namw
+                .signWith(signingKey, signatureAlgorithm);
 
-		// if it has been specified, let's add the expiration
-		if (ttlMillis >= 0) {
-			long expMillis = nowMillis + ttlMillis;
-			Date exp = new Date(expMillis);
-			builder.setExpiration(exp);
-		}
+        // if it has been specified, let's add the expiration
+        if (ttlMillis >= 0) {
+            long expMillis = nowMillis + ttlMillis;
+            Date exp = new Date(expMillis);
+            builder.setExpiration(exp);
+        }
 
-		// Builds the JWT and serializes it to a compact, URL-safe string
-		return builder.compact();
-	}
+        // Builds the JWT and serializes it to a compact, URL-safe string
+        return builder.compact();
+    }
 
-	public boolean deCodeJWT_validate(String jwt, String customer_email,String customer_ID) {
-		try {
+    public boolean deCodeJWT_validate(String jwt, String customer_email, String customer_ID) {
+        try {
 //			 System.out.println(" jwt  ========:: " + jwt);
 //			 System.out.println(" jwtgetmsisdn    ========:: " + msisdn);
 
 
-			// This line will throw an exception if it is not a signed JWS (as expected)
-			Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(GlobalParameter.sign_key)).parseClaimsJws(jwt)
-					.getBody();
+            // This line will throw an exception if it is not a signed JWS (as expected)
+            Claims claims = Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(GlobalParameter.sign_key)).parseClaimsJws(jwt)
+                    .getBody();
 
 //			System.out.println("claims  ========:: " + claims);
 //
@@ -88,14 +87,14 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 //			         .parse(jwt);
 
 
-			String getCustomer_email = claims.getSubject();
-			String getCustomerID = claims.getIssuer();
+            String getCustomer_email = claims.getSubject();
+            String getCustomerID = claims.getIssuer();
 
 //			System.out.println("getCustomer_email  ========:: " + getCustomer_email);
 //			System.out.println("getuserName  ========:: " + getCustomerID);
 
-			// System.out.println(" jwtgetUserName11111========:: " + getuserName);
-			// System.out.println(" jwtgetUserID1111111========:: " + getPhoneNumber);
+            // System.out.println(" jwtgetUserName11111========:: " + getuserName);
+            // System.out.println(" jwtgetUserID1111111========:: " + getPhoneNumber);
 
 //	    String isSessionIDJWT = "";
 //
@@ -105,7 +104,7 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 //		return false;
 //	    }
 
-			// Get sessionProfile from hash table;.
+            // Get sessionProfile from hash table;.
 //	    String localSessionID = "";
 //	    try {
 //		String sessionStrLocal = GlobalParameter.hMapProfile.get(msisdn.trim());
@@ -118,26 +117,26 @@ public class JWT_Security_Encode_Decode_Java extends Thread {
 //		return false;
 //	    }
 
-			// System.out.println("getMsisdn: " + claims.getSubject());
-			// System.out.println("msisdn: " + msisdn);
+            // System.out.println("getMsisdn: " + claims.getSubject());
+            // System.out.println("msisdn: " + msisdn);
 
-			if (getCustomer_email.equals(customer_email) && getCustomerID.equals(customer_ID)) {
-				// if(getMsisdn.equals(msisdn) && localSessionID.equals(isSessionIDJWT) ) {
-				return true;
-			} else {
+            if (getCustomer_email.equals(customer_email) && getCustomerID.equals(customer_ID)) {
+                // if(getMsisdn.equals(msisdn) && localSessionID.equals(isSessionIDJWT) ) {
+                return true;
+            } else {
 
-				return false;
-			}
+                return false;
+            }
 
-			// System.out.println("ID: " + claims.getId());
-			// System.out.println("Subject: " + claims.getSubject());
-			// System.out.println("Issuer: " + claims.getIssuer());
-			// System.out.println("Expiration: " + claims.getExpiration());
+            // System.out.println("ID: " + claims.getId());
+            // System.out.println("Subject: " + claims.getSubject());
+            // System.out.println("Issuer: " + claims.getIssuer());
+            // System.out.println("Expiration: " + claims.getExpiration());
 
-		} catch (Exception e) {
-			// System.out.println(" Exception========:: " + e.getMessage());
+        } catch (Exception e) {
+            // System.out.println(" Exception========:: " + e.getMessage());
 
-			return false;
-		}
-	}
+            return false;
+        }
+    }
 }

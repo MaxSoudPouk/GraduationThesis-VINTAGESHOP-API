@@ -77,15 +77,15 @@ public class ShowOrderCustomer {
             String customer_phonenumber = "";
             while (resultSet.next()) {
 
-                 order_id = resultSet.getString("order_id");
-                 customer_id = resultSet.getString("customer_id");
-                 order_amount = resultSet.getString("order_amount");
-                 customer_name = resultSet.getString("customer_name");
-                 total_price = resultSet.getString("total_price");
-                 transaction_id = resultSet.getString("transaction_id");
-                 order_date = resultSet.getString("order_date");
-                 customer_url_image = resultSet.getString("customer_url_image");
-                 customer_phonenumber = resultSet.getString("customer_phonenumber");
+                order_id = resultSet.getString("order_id");
+                customer_id = resultSet.getString("customer_id");
+                order_amount = resultSet.getString("order_amount");
+                customer_name = resultSet.getString("customer_name");
+                total_price = resultSet.getString("total_price");
+                transaction_id = resultSet.getString("transaction_id");
+                order_date = resultSet.getString("order_date");
+                customer_url_image = resultSet.getString("customer_url_image");
+                customer_phonenumber = resultSet.getString("customer_phonenumber");
 
 //
 //                product_detail.put("OrderID", String.valueOf(order_id));
@@ -142,8 +142,6 @@ public class ShowOrderCustomer {
 
             return ResponseEntity.ok(response);
         }
-
-
 
 
     }

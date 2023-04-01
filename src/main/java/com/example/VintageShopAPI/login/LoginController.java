@@ -87,7 +87,6 @@ public class LoginController {
                     String user_phone = resultSet.getString("customer_phonenumber");
 
 
-
                     // Gen JWT
                     String jwtTokenStrng = "";
 

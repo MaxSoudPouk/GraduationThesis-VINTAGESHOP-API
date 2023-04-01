@@ -1,7 +1,6 @@
 package com.example.VintageShopAPI.displayimage;
 
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
-import com.example.VintageShopAPI.login.LoginController;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +8,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -18,6 +18,7 @@ public class displayimageController {
     DatabaseConnectionPool dbConnectionPool;
 
     BufferedImage bufferedImage;
+
     private void setRequest(HttpServletRequest request) {
         displayimageController.request = request;
 
@@ -28,17 +29,22 @@ public class displayimageController {
                     RequestMethod.GET,
                     RequestMethod.POST},
                     produces = MediaType.IMAGE_PNG_VALUE)
-    public BufferedImage getImage(
+    public BufferedImage BufferedImage(
             @RequestParam(defaultValue = "") String filename
-    ) throws java.io.IOException {
+    ) {
 
         if (filename.equals("")) {
+
             return null;
         }
 
-        String FILE_PATH_ROOT = "H:/";
-        bufferedImage = ImageIO.read(new File(FILE_PATH_ROOT + filename).getAbsoluteFile());
-        return bufferedImage;
+        try {
+            String FILE_PATH_ROOT = "H:/";
+            bufferedImage = ImageIO.read(new File(FILE_PATH_ROOT + filename).getAbsoluteFile());
+            return bufferedImage;
+        } catch (IOException e) {
+            return null;
+        }
 
 
     }

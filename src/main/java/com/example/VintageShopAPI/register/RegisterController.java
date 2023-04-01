@@ -92,9 +92,6 @@ public class RegisterController {
 //====================== END Create date ======================//
 
 
-
-
-
         if (customer_url_image.isEmpty()) {
 
             String URL_image1 = "/Data_VINTAGESHOP/Profile/DemoProfile/user.png";
@@ -258,7 +255,6 @@ public class RegisterController {
             String sql = "INSERT INTO customer_tb (customer_id, customer_first_name, customer_last_name, customer_password, customer_email," +
                     " customer_phonenumber, customer_address, customer_url_image) values (?, ?, ?, ?, ?, ?, ?, ?)";
             String sqlqr = "SELECT * FROM customer_tb WHERE customer_email = ? ;";
-
 
 
             try {

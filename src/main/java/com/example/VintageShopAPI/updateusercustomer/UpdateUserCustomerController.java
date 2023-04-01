@@ -24,7 +24,6 @@ import java.util.*;
 public class UpdateUserCustomerController {
 
 
-
     //private static final String PATTERN_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String PATTERN_FORMAT = "HHmmss";
     static Calendar cal = new GregorianCalendar(Locale.ROOT);
@@ -104,33 +103,32 @@ public class UpdateUserCustomerController {
                 PreparedStatement statement = connection1.prepareStatement(sqlqr);
 
 
-                    PreparedStatement statement1 = connection1.prepareStatement(updateSql);
+                PreparedStatement statement1 = connection1.prepareStatement(updateSql);
 
-                    statement1.setString(1, customer_first_name);
-                    statement1.setString(2, customer_last_name);
-                    statement1.setString(3, customer_phonenumber);
-                    statement1.setString(4, customer_address);
-                    statement1.setString(5, customer_id);
+                statement1.setString(1, customer_first_name);
+                statement1.setString(2, customer_last_name);
+                statement1.setString(3, customer_phonenumber);
+                statement1.setString(4, customer_address);
+                statement1.setString(5, customer_id);
 
-                    int rowsUpdated = statement1.executeUpdate();
-
-
-                    // System.out.println("sql====="+ sql);
-                    if (rowsUpdated > 0) {
+                int rowsUpdated = statement1.executeUpdate();
 
 
-                        response.put("resultCode", "200");
-                        response.put("resultMsg", "OK, success");
-                        response.put("FirstName", customer_first_name);
-                        response.put("LastName", customer_last_name);
-                        response.put("PhoneNumber", customer_phonenumber);
-                        response.put("Address", customer_address);
+                // System.out.println("sql====="+ sql);
+                if (rowsUpdated > 0) {
 
 
-                        return ResponseEntity.ok(response);
-                    }
-                    // System.out.println("An existing user was updated successfully!");
+                    response.put("resultCode", "200");
+                    response.put("resultMsg", "OK, success");
+                    response.put("FirstName", customer_first_name);
+                    response.put("LastName", customer_last_name);
+                    response.put("PhoneNumber", customer_phonenumber);
+                    response.put("Address", customer_address);
 
+
+                    return ResponseEntity.ok(response);
+                }
+                // System.out.println("An existing user was updated successfully!");
 
 
             } catch (SQLException ex) {
@@ -229,7 +227,6 @@ public class UpdateUserCustomerController {
             String sqlqr = "SELECT * FROM customer_tb WHERE customer_email = ? ;";
 
 
-
             try {
                 dbConnectionPool = new DatabaseConnectionPool(
                         Config.driverServr, Config.dburlServr,
@@ -239,30 +236,30 @@ public class UpdateUserCustomerController {
                 PreparedStatement statement = connection1.prepareStatement(sqlqr);
 
 
-                    PreparedStatement statement1 = connection1.prepareStatement(updateSql);
+                PreparedStatement statement1 = connection1.prepareStatement(updateSql);
 
-                    statement1.setString(1, customer_first_name);
-                    statement1.setString(2, customer_last_name);
-                    statement1.setString(3, customer_phonenumber);
-                    statement1.setString(4, customer_address);
-                    statement1.setString(5, URL_image1);
-                    statement1.setString(6, customer_id);
+                statement1.setString(1, customer_first_name);
+                statement1.setString(2, customer_last_name);
+                statement1.setString(3, customer_phonenumber);
+                statement1.setString(4, customer_address);
+                statement1.setString(5, URL_image1);
+                statement1.setString(6, customer_id);
 
-                    int rowsUpdated = statement1.executeUpdate();
-
-
-                    // System.out.println("sql====="+ sql);
-                    if (rowsUpdated > 0) {
+                int rowsUpdated = statement1.executeUpdate();
 
 
-                        response.put("resultCode", "200");
-                        response.put("resultMsg", "OK, success");
-                        response.put("customer_url_image", URL_image1);
-                        response.put("customer_first_name", customer_first_name);
+                // System.out.println("sql====="+ sql);
+                if (rowsUpdated > 0) {
 
-                        return ResponseEntity.ok(response);
-                    }
-                    // System.out.println("An existing user was updated successfully!");
+
+                    response.put("resultCode", "200");
+                    response.put("resultMsg", "OK, success");
+                    response.put("customer_url_image", URL_image1);
+                    response.put("customer_first_name", customer_first_name);
+
+                    return ResponseEntity.ok(response);
+                }
+                // System.out.println("An existing user was updated successfully!");
 
 
             } catch (SQLException ex) {

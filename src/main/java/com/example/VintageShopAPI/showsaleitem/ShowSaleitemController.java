@@ -52,8 +52,6 @@ public class ShowSaleitemController {
 //=========================== vintage0001 ===========================//
 
 
-
-
         try {
             dbConnectionPool = new DatabaseConnectionPool(Config.driverServr, Config.dburlServr, Config.dbUserNameServr, Config.dbPasswordServr);
             connection1 = dbConnectionPool.getConnection();

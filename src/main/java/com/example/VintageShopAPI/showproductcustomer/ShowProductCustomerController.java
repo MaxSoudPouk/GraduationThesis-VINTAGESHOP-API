@@ -135,7 +135,6 @@ public class ShowProductCustomerController {
             }
 
 
-
             response.put("resultCode", "200");
             response.put("showProductname", "vintage0001");
             response.put("ProductDetail", resultMsg);

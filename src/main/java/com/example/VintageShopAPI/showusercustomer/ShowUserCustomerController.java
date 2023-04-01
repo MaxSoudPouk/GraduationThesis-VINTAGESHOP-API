@@ -25,6 +25,7 @@ public class ShowUserCustomerController {
         ShowUserCustomerController.request = request;
 
     }
+
     @GetMapping("/v1/ShowUserCustomer")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String token
@@ -64,7 +65,6 @@ public class ShowUserCustomerController {
             PreparedStatement statement = connection1.prepareStatement(sql);
 
             ResultSet resultSet = statement.executeQuery();
-
 
 
             while (resultSet.next()) {

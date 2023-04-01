@@ -31,7 +31,7 @@ public class DeleteSaleItemController {
         Map<String, Object> response = new HashMap<>();
 
 
-        if (OrderID.equals("") || CustomerID.equals("") || token.equals("")|| user_Email.equals("")|| user_ID.equals("")) {
+        if (OrderID.equals("") || CustomerID.equals("") || token.equals("") || user_Email.equals("") || user_ID.equals("")) {
 
 
             response.put("resultCode", "406");
@@ -73,42 +73,41 @@ public class DeleteSaleItemController {
 
         if (jwtencoderesult) {
 
-        try {
-            dbConnectionPool = new
-                    DatabaseConnectionPool(Config.driverServr,
-                    Config.dburlServr,
-                    Config.dbUserNameServr,
-                    Config.dbPasswordServr);
-            connection1 = dbConnectionPool.getConnection();
-            PreparedStatement statement = connection1.prepareStatement(sql);
+            try {
+                dbConnectionPool = new
+                        DatabaseConnectionPool(Config.driverServr,
+                        Config.dburlServr,
+                        Config.dbUserNameServr,
+                        Config.dbPasswordServr);
+                connection1 = dbConnectionPool.getConnection();
+                PreparedStatement statement = connection1.prepareStatement(sql);
 
-            int deletedRows = statement.executeUpdate();
+                int deletedRows = statement.executeUpdate();
 
-            if (deletedRows > 0) {
-                response.put("resultCode", "200");
-                response.put("resultMsg", "OK, success");
-                response.put("Delete_Status", "OK");
-                response.put("date", datepro111);
+                if (deletedRows > 0) {
+                    response.put("resultCode", "200");
+                    response.put("resultMsg", "OK, success");
+                    response.put("Delete_Status", "OK");
+                    response.put("date", datepro111);
 
-                return ResponseEntity.ok(response);
-            } else {
+                    return ResponseEntity.ok(response);
+                } else {
+                    response.put("resultCode", "216");
+                    response.put("resultMsg", "Error query Data Product");
+                    response.put("extraPara", "");
+
+                    return ResponseEntity.ok(response);
+                }
+
+            } catch (SQLException ex) {
+
                 response.put("resultCode", "216");
                 response.put("resultMsg", "Error query Data Product");
                 response.put("extraPara", "");
 
                 return ResponseEntity.ok(response);
             }
-
-        } catch (SQLException ex) {
-
-            response.put("resultCode", "216");
-            response.put("resultMsg", "Error query Data Product");
-            response.put("extraPara", "");
-
-            return ResponseEntity.ok(response);
-        }
-    }
-            else {
+        } else {
 
             response.put("resultCode", "498");
             response.put("ResultMsg", "Invalid_Token");

@@ -62,7 +62,7 @@ public class ProfilecustomerController {
 
         String query = "SELECT customer_first_name, customer_last_name, customer_phonenumber, customer_address, customer_url_image, customer_email " +
                 "FROM customer_tb " +
-                "WHERE customer_id = '"+customerLoginID+"' OR customer_email = '"+customerLoginEmail+"';";
+                "WHERE customer_id = '" + customerLoginID + "' OR customer_email = '" + customerLoginEmail + "';";
 
         //validate JWT
         boolean jwtencoderesult = false;
@@ -72,74 +72,72 @@ public class ProfilecustomerController {
 
         if (jwtencoderesult) {
 
-        try {
-            dbConnectionPool = new DatabaseConnectionPool(
-                    Config.driverServr, Config.dburlServr,
-                    Config.dbUserNameServr,
-                    Config.dbPasswordServr);
-            connection1 = dbConnectionPool.getConnection();
-            PreparedStatement statement = connection1.prepareStatement(query);
+            try {
+                dbConnectionPool = new DatabaseConnectionPool(
+                        Config.driverServr, Config.dburlServr,
+                        Config.dbUserNameServr,
+                        Config.dbPasswordServr);
+                connection1 = dbConnectionPool.getConnection();
+                PreparedStatement statement = connection1.prepareStatement(query);
 
-            ResultSet resultSet = statement.executeQuery();
+                ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()) {
-                String firstName = resultSet.getString("customer_first_name");
-                String lastName = resultSet.getString("customer_last_name");
-                String phoneNumber = resultSet.getString("customer_phonenumber");
-                String address = resultSet.getString("customer_address");
-                String customeremail = resultSet.getString("customer_email");
-                String customerurlimage = resultSet.getString("customer_url_image");
-                // Do something with the result set
+                while (resultSet.next()) {
+                    String firstName = resultSet.getString("customer_first_name");
+                    String lastName = resultSet.getString("customer_last_name");
+                    String phoneNumber = resultSet.getString("customer_phonenumber");
+                    String address = resultSet.getString("customer_address");
+                    String customeremail = resultSet.getString("customer_email");
+                    String customerurlimage = resultSet.getString("customer_url_image");
+                    // Do something with the result set
 
 
-                response.put("resultCode", "200");
-                response.put("resultMsg", "OK, success");
-                response.put("FirstName", firstName);
-                response.put("LastName", lastName);
-                response.put("PhoneNumber", phoneNumber);
-                response.put("Address", address);
-                response.put("Email", customeremail);
-                response.put("URL_image", customerurlimage);
+                    response.put("resultCode", "200");
+                    response.put("resultMsg", "OK, success");
+                    response.put("FirstName", firstName);
+                    response.put("LastName", lastName);
+                    response.put("PhoneNumber", phoneNumber);
+                    response.put("Address", address);
+                    response.put("Email", customeremail);
+                    response.put("URL_image", customerurlimage);
 
+
+                    return ResponseEntity.ok(response);
+
+                }
+
+
+            } catch (SQLException ex) {
+
+                response.put("resultCode", "216");
+                response.put("resultMsg", "Error query Data Profile");
+                response.put("extraPara", "===");
 
                 return ResponseEntity.ok(response);
+            } finally {
 
+                try {
+
+                    dbConnectionPool.freeConnection(connection1);
+                    // release resources
+                    // dbConnectionPool.destroy();
+
+                    if (conntAuth != null) {
+                        conntAuth.close();
+                    }
+
+                    if (statementtAuth != null) {
+                        statementtAuth.close();
+                    }
+
+                    if (resultSettAuth != null) {
+                        resultSettAuth.close();
+                    }
+                } catch (Exception e3) {
+
+                }
             }
-
-
-        } catch (SQLException ex) {
-
-            response.put("resultCode", "216");
-            response.put("resultMsg", "Error query Data Profile");
-            response.put("extraPara", "===");
-
-            return ResponseEntity.ok(response);
-        } finally {
-
-            try {
-
-                dbConnectionPool.freeConnection(connection1);
-                // release resources
-                // dbConnectionPool.destroy();
-
-                if (conntAuth != null) {
-                    conntAuth.close();
-                }
-
-                if (statementtAuth != null) {
-                    statementtAuth.close();
-                }
-
-                if (resultSettAuth != null) {
-                    resultSettAuth.close();
-                }
-            } catch (Exception e3) {
-
-            }
-        }
-    }
-
-                else {
+        } else {
 
             response.put("resultCode", "498");
             response.put("ResultMsg", "Invalid_Token");
