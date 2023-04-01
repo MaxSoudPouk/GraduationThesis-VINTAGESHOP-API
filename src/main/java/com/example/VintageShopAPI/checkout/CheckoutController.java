@@ -1,6 +1,5 @@
-package com.example.VintageShopAPI.CheckOut;
+package com.example.VintageShopAPI.checkout;
 
-import com.example.VintageShopAPI.customermessage.CustomerMessageController;
 import com.example.VintageShopAPI.db.Config;
 import com.example.VintageShopAPI.db.DatabaseConnectionPool;
 import org.json.JSONArray;

@@ -52,6 +52,7 @@ public class AddProductController extends Thread {
     @PostMapping("/v1/addProduct")
     public ResponseEntity<Map<String, Object>> AddProduct(
             @RequestParam(defaultValue = "") String detail_id,
+            @RequestParam(defaultValue = "") String transaction_id,
             @RequestParam(defaultValue = "") String category_id,
             @RequestParam(defaultValue = "") String product_id,
             @RequestParam(defaultValue = "") String description_id,
@@ -61,6 +62,7 @@ public class AddProductController extends Thread {
             @RequestParam(defaultValue = "") String detailproduct,
             @RequestParam(defaultValue = "") String amoutProduct,
             @RequestParam(defaultValue = "") Double priceProduct,
+            @RequestParam(defaultValue = "") Double purchaseprice,
             @RequestParam(defaultValue = "") MultipartFile image1,
             @RequestParam(defaultValue = "") MultipartFile image2,
             @RequestParam(defaultValue = "") MultipartFile image3,
@@ -73,6 +75,7 @@ public class AddProductController extends Thread {
         AddProductModel AddProductmodel = new AddProductModel();
 
         if (
+
                 product_id.equals("")
                         || category_id.equals("")
                         || description.equals("")
@@ -157,6 +160,7 @@ public class AddProductController extends Thread {
 
 
         int product_status = 1;
+        int transaction_status = 2;
         PreparedStatement pstmt;
                     ResultSet rs;
         DatabaseConnectionPool dbConnectionPool = null;
@@ -170,8 +174,10 @@ public class AddProductController extends Thread {
         String sql2 = "insert into pos_image (image_id, image_url_1, image_url_2, image_url_3, image_url_4, image_url_5) values (?, ?, ?, ?, ?, ?)";
         String sql3 = "insert into products_tb (product_id, detail_id, description_id, product_name, image_id,product_status) values (?, ?, ?, ?, ?, ?)";
         String sql4 = "insert into descriptions (description_id, description) values (?, ?)";
-        String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount) values (?, ?, ?, ?, ?)";
+        String sql5 = "insert into products_attribute (product_id, image_id, price, detail_id, product_amount, purchase_price) values (?, ?, ?, ?, ?, ?)";
         String sql6 = "insert into details (detail_id, detail) values (?, ?)";
+        String sql7 = "insert into transaction_tb (cost, transaction_id, transaction_status, amount, title, transaction_date, delete_transaction_status, update_transaction_date, type_transaction)\n" +
+                " values ('"+purchaseprice+"', '"+transaction_id+"', '"+transaction_status+"', '"+amoutProduct+"', '"+productName+"',NOW(), ' 1 ', NOW(), 'Product') ";
 
         try {
             dbConnectionPool = new DatabaseConnectionPool(
@@ -186,6 +192,8 @@ public class AddProductController extends Thread {
             PreparedStatement statement4 = connection1.prepareStatement(sql4);
             PreparedStatement statement5 = connection1.prepareStatement(sql5);
             PreparedStatement statement6 = connection1.prepareStatement(sql6);
+            PreparedStatement statement7 = connection1.prepareStatement(sql7);
+
             statement1.setString(1, category_id);
             statement1.setString(2, product_id);
             int rowsUpdated1 = statement1.executeUpdate();
@@ -215,6 +223,7 @@ public class AddProductController extends Thread {
             statement5.setDouble(3, priceProduct);
             statement5.setString(4, detail_id);
             statement5.setString(5, amoutProduct);
+            statement5.setDouble(6, purchaseprice);
             int rowsUpdated5 = statement5.executeUpdate();
 
             statement6.setString(1, detail_id);
@@ -222,8 +231,11 @@ public class AddProductController extends Thread {
             int rowsUpdated6 = statement6.executeUpdate();
 
 
+            int rowsUpdated7 = statement7.executeUpdate();
+
+
             // System.out.println("sql====="+ sql);
-            if (rowsUpdated1 > 0 && rowsUpdated2 > 0 && rowsUpdated3 > 0 && rowsUpdated4 > 0 && rowsUpdated5 > 0 && rowsUpdated6 > 0) {
+            if (rowsUpdated1 > 0 && rowsUpdated2 > 0 && rowsUpdated3 > 0 && rowsUpdated4 > 0 && rowsUpdated5 > 0 && rowsUpdated6 > 0 && rowsUpdated7 > 0) {
                 // System.out.println("An existing user was updated successfully!");
 
                 response.put("resultCode", "200");

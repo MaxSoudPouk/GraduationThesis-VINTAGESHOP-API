@@ -32,12 +32,24 @@ public class CustomerMessageController {
             @RequestParam(defaultValue = "") String customer_name,
             @RequestParam(defaultValue = "") String customer_email,
             @RequestParam(defaultValue = "") String message_customer,
-            @RequestParam(defaultValue = "") String message_id
+            @RequestParam(defaultValue = "") String message_id,
+            @RequestParam(defaultValue = "") String customer_id
 
     ) throws JSONException {
 
         Map<String, Object> response = new HashMap<>();
-        List<Map<String, String>> resultMsg = new ArrayList<>();
+        if (
+                customer_id.equals(""))
+                        {
+
+
+            response.put("resultCode", "405");
+            response.put("resultMsg", "customer_id not acceptable");
+            response.put("extraPara", "");
+
+            return ResponseEntity.ok(response);
+
+        }
 
 
         if (
@@ -64,7 +76,7 @@ public class CustomerMessageController {
             String dateNow111 = formatter111.format(currentDate111.getTime());
             String datepro111 = dateNow111.toString();
 
-//====================== END Create date ======================//
+            //====================== END Create date ======================//
 //=========================== DB ===========================//
             PreparedStatement pstmt;
             ResultSet rs;
@@ -74,8 +86,8 @@ public class CustomerMessageController {
             Statement statementtAuth = null;
             ResultSet resultSettAuth = null;
             Connection conntAuth = null;
-            String sql = "insert into customer_message (customer_name, customer_email, date_time, message_customer, message_id) " +
-                    "values (?, ?, ?, ?, ?); ";
+            String sql = "insert into customer_message (customer_name, customer_email, date_time, message_customer, message_id, customer_id)\n" +
+                    "                    values ('"+customer_name+"', '"+customer_email+"', NOW(), '"+message_customer+"', '"+message_id+"', '"+customer_id+"'); ";
             try {
                 dbConnectionPool = new
                         DatabaseConnectionPool(Config.driverServr,
@@ -85,11 +97,12 @@ public class CustomerMessageController {
                 connection1 = dbConnectionPool.getConnection();
                 PreparedStatement statement = connection1.prepareStatement(sql);
 
-                statement.setString(1, customer_name);
-                statement.setString(2, customer_email);
-                statement.setString(3, datepro111);
-                statement.setString(4, message_customer);
-                statement.setString(5, message_id);
+//                statement.setString(1, customer_name);
+//                statement.setString(2, customer_email);
+//                statement.setString(3, datepro111);
+//                statement.setString(4, message_customer);
+//                statement.setString(5, message_id);
+//                statement.setString(5, customer_id);
 
                 int rowsUpdated = statement.executeUpdate();
 
