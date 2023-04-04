@@ -47,10 +47,11 @@ public class ShowCustomerContact {
         Statement statementtAuth = null;
         ResultSet resultSettAuth = null;
         Connection conntAuth = null;
-        String sql = "SELECT cm.customer_email, cm.message_customer, cm.date_time,ct.customer_first_name, ct.customer_address, ct.customer_url_image, ct.customer_phonenumber\n" +
+        String sql = "SELECT cm.message_id, cm.customer_email, cm.message_customer, cm.date_time,ct.customer_first_name, ct.customer_address, ct.customer_url_image, ct.customer_phonenumber\n" +
                 "FROM customer_message cm\n" +
                 "INNER JOIN customer_tb ct\n" +
-                "ON cm.customer_id = ct.customer_id ";
+                "ON cm.customer_id = ct.customer_id\n"+
+                "WHERE cm.message_status_delete = 1 ";
 
 //=========================== vintage0001 ===========================//
         try {
@@ -75,7 +76,7 @@ public class ShowCustomerContact {
                 String customer_address = resultSet.getString("customer_address");
                 String customer_url_image = resultSet.getString("customer_url_image");
                 String customer_phonenumber = resultSet.getString("customer_phonenumber");
-
+                String message_id = resultSet.getString("message_id");
 
                 product_detail.put("customer_email", String.valueOf(customer_email));
                 product_detail.put("message_customer", String.valueOf(message_customer));
@@ -84,6 +85,7 @@ public class ShowCustomerContact {
                 product_detail.put("customer_address", String.valueOf(customer_address));
                 product_detail.put("customer_url_image", String.valueOf(customer_url_image));
                 product_detail.put("customer_phonenumber", String.valueOf(customer_phonenumber));
+                product_detail.put("message_id", String.valueOf(message_id));
 
                 resultMsg.add(product_detail);
 
