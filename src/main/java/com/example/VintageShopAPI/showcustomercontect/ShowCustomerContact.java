@@ -51,7 +51,7 @@ public class ShowCustomerContact {
                 "FROM customer_message cm\n" +
                 "INNER JOIN customer_tb ct\n" +
                 "ON cm.customer_id = ct.customer_id\n"+
-                "WHERE cm.message_status_delete = 1 ";
+                "WHERE cm.message_status_delete = '1' ";
 
 //=========================== vintage0001 ===========================//
         try {
